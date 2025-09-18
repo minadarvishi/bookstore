@@ -27,6 +27,15 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(cart_bp)
 
+    #  ساخت خودکار دیتابیس ---
+    @app.before_request
+    def create_tables():
+        if not getattr(app, '_database_initialized', False):
+            with app.app_context():
+                db.create_all()
+            app._database_initialized = True
+            print("--- DATABASE TABLES CREATED ON FIRST REQUEST ---")
+
     #  ساخت دیتابیس
     @app.cli.command('init-db')
     def init_db_command():
