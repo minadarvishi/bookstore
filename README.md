@@ -40,8 +40,8 @@
 
 1.  **کلون کردن ریپازیتوری:**
     ```bash
-    git clone [آدرس گیت‌هاب شما در اینجا]
-    cd [نام پوشه پروژه]
+    git clone https://github.com/minadarvishi/bookstore.git
+    cd bookstore
     ```
 
 2.  **ساخت و فعال‌سازی محیط مجازی:**
