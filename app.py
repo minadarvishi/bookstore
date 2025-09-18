@@ -14,6 +14,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # --- اتصال افزونه‌ها به اپلیکیشن ---
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
     # --- افزودن کلید مخفی برای امنیت سشن ---
     app.config['SECRET_KEY'] = 'a-super-secret-key-that-no-one-can-guess'
 
