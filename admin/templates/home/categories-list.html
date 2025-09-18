@@ -1,0 +1,62 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} مدیریت دسته‌بندی‌ها {% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <!-- ستون لیست دسته‌بندی‌ها -->
+    <div class="col-md-7 mt-4">
+      <div class="card">
+        <!-- سربرگ رنگی برای لیست -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">لیست دسته‌بندی‌ها</h6>
+          </div>
+        </div>
+        <div class="card-body pt-4 p-3">
+          <ul class="list-group">
+            {% for category in categories %}
+            <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+              <div class="d-flex flex-column">
+                <h6 class="mb-3 text-sm">{{ category.name }}</h6>
+                <span class="mb-2 text-xs">ID: <span class="text-dark font-weight-bold ms-sm-2">{{ category.id }}</span></span>
+              </div>
+              <div class="ms-auto text-end">
+                <a class="btn btn-link text-dark px-3 mb-0" href="{{ url_for('admin.edit_category', category_id=category.id) }}">ویرایش</a>
+                <form method="POST" action="{{ url_for('admin.delete_category', category_id=category.id) }}" style="display: inline;">
+                      <button type="submit" class="btn btn-link text-danger mb-0" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');">
+                        حذف
+                      </button>
+                    </form>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ستون فرم افزودن/ویرایش -->
+    <div class="col-md-5 mt-4">
+      <div class="card h-100 mb-4">
+        <!-- سربرگ رنگی برای فرم -->
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-secondary shadow-secondary border-radius-lg pt-4 pb-3">
+              <h6 class="text-white text-capitalize ps-3">افزودن / ویرایش دسته‌بندی</h6>
+            </div>
+          </div>
+        <div class="card-body pt-4 p-3">
+          <form method="POST" action="{{ url_for('admin.list_categories') }}">
+            <div class="form-group mb-3">
+              <label for="name">نام دسته‌بندی</label>
+              <input type="text" class="form-control border p-2" id="name" name="name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">ذخیره</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+
+<main class="main">
+
+<section id="product-detail-final" class="product-detail-section-final section">
+    <div class="container">
+        <div class="row">
+            <!-- ستون سمت راست: تصویر محصول -->
+            <div class="col-lg-4" data-aos="fade-right">
+                <div class="product-gallery-final">
+                    <img src="{{ url_for('admin.static', filename='uploads/' + product.image_file) }}" alt="{{ product.name }}" class="img-fluid">
+                </div>
+            </div>
+
+            <!-- ستون وسط: اطلاعات اصلی محصول -->
+            <div class="col-lg-5" data-aos="fade-up">
+                <div class="product-main-info-final">
+                    <h1>{{ product.name }}</h1>
+                    <div class="subtitle-info-final">
+                        <span>نویسنده: {{ product.author }}</span>
+                        {% if product.publisher %}
+                        <span class="mx-2">|</span>
+                        <span>ناشر: {{ product.publisher.name }}</span>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <h5>ویژگی‌های محصول</h5>
+                    <ul class="specs-list-final">
+                        <li><strong>دسته‌بندی:</strong> {{ product.category.name }}</li>
+                        {% if product.year %}<li><strong>سال انتشار:</strong> {{ product.year }}</li>{% endif %}
+                        {% if product.pages %}<li><strong>تعداد صفحات:</strong> {{ product.pages }}</li>{% endif %}
+                        {% if product.isbn %}<li><strong>شابک (ISBN):</strong> {{ product.isbn }}</li>{% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ستون سمت چپ: باکس خرید -->
+            <div class="col-lg-3" data-aos="fade-left">
+                <div class="purchase-box-final">
+                    <h5>خرید محصول</h5>
+                    <div class="guarantee-list-final">
+                        <span><i class="bi bi-box-seam"></i> ارسال توسط فروشگاه</span>
+                        <span><i class="bi bi-shield-check"></i> تضمین اصالت کالا</span>
+                        <span><i class="bi bi-arrow-repeat"></i> ضمانت تعویض کالا</span>
+                    </div>
+                    <div class="price-section-final">
+                        <!-- قیمت نهایی بدون تخفیف -->
+                        <div class="current-price-final">
+                            {{ "{:,.0f}".format(product.price) }} <span>تومان</span>
+                        </div>
+                    </div>
+                    <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="POST">
+                        <button type="submit" class="btn-add-to-cart-final">افزودن به سبد خرید</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- بخش توضیحات با فاصله کمتر -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="product-tabs-final">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active">توضیحات</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <p style="white-space: pre-wrap;">{{ product.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+{% endblock %}

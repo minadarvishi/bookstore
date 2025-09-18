@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block title %}تایید سفارش #{{ order.id }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+</style>
+{% endblock %}
+
+
+{% block content %}
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">تایید سفارش</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{{ url_for('main.home') }}" style="color: #5d4b38">خانه</a></li>
+            <li class="current">تایید سفارش</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Order Confirmation Section -->
+    <section id="order-confirmation" class="order-confirmation section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="order-confirmation-3">
+          <div class="row g-0">
+            <!-- Left sidebar with order summary -->
+            <!-- Main content area -->
+            <div class="col-lg-12 main-content" data-aos="fade-in">
+              <!-- Thank you message -->
+              <div class="thank-you-message">
+                <h1>ممنون از سفارشتون!</h1>
+                <p>ما سفارش شما را دریافت کرده‌ایم و بلافاصله پردازش آن را آغاز خواهیم کرد.</p>
+              </div>
+
+              <!-- Shipping details -->
+              <div class="details-card" data-aos="fade-up">
+                <div class="card-header" data-toggle="collapse">
+                  <h3>
+                    <i class="bi bi-geo-alt"></i>
+                    جزئیات سفارش
+                  </h3>
+                  <i class="bi bi-chevron-down toggle-icon"></i>
+                </div>
+                <div class="card-body">
+                  <div class="row g-4">
+                    <div class="col-md-6">
+                      <div class="detail-group">
+                        <label>اطلاعات مشتری</label>
+                        <address>
+                           نام و نام خانوادگی : {{ order.customer_name }}<br>
+                           شماره تماس : {{ order.customer_phone }} <br>
+                           آدرس : {{ order.customer_address }}<br>
+                        </address>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="detail-group">
+                        <label>سفارش</label>
+                        <address>
+                          #ORD-{{ order.id }}<br>
+                           تاریخ : {{ order.order_date }}<br>
+                          <p style="color: #2e6930">تایید شد.</p><br>
+                        </address>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Order items -->
+              <div class="details-card" data-aos="fade-up">
+            <div class=" card-header" data-toggle="collapse">
+                <h3>
+                  <i class="bi bi-bag-check"></i>اقلام سفارش
+                </h3>
+                <i class="bi bi-chevron-down toggle-icon"></i>
+              </div>
+              <div class="card-body">
+                {% for item in order.items %}
+                <div class="item">
+                  <div class="item-image">
+                    <img src="{{ url_for('admin.static', filename='uploads/' + item.product.image_file) }}" alt="{{ item.product.name }}" loading="lazy">
+                  </div>
+                  <div class="item-details">
+                    <h4>{{ item.product.name }}</h4>
+                    <div class="item-price">
+                      <span class="quantity">{{ item.quantity }} ×</span>
+                      <span class="price">{{ "{:,.0f}".format(item.product.price) }}</span>
+                    </div>
+                  </div>
+                </div>
+                 {% endfor %}
+              </div>
+            </div>
+            <!-- Action buttons -->
+            <div class="action-area" data-aos="fade-up">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <a href="{{url_for('main.shop')}}" class="btn btn-back">
+                    <i class="bi bi-arrow-left"></i>
+                    بازگشت به فروشگاه
+                  </a>
+                </div>
+                <div class="col-md-6">
+                  <a onclick="window.print();" class="btn btn-account">
+                    <span>چاپ فاکتور</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </section><!-- /Order Confirmation Section -->
+
+  </main>
+
+{% endblock %}
+
+

@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}صفحه اصلی - فروشگاه کتاب{% endblock %}
+{% block content %}
+<main class="main">
+
+<section id="contact-page" class="contact-page-section section">
+    <div class="container">
+
+        <!-- بخش بالایی (Hero) -->
+        <div class="contact-hero" data-aos="fade-up">
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='assets/img/contact-hero-bg.jpg') }}" alt="کتابخانه بزرگ">
+            </div>
+            <div class="hero-content">
+                <h2>در سریع‌ترین زمان ممکن پاسخگوی شما خواهیم بود...</h2>
+                <p>تیم ما همیشه آماده است تا به سوالات شما درباره کتاب‌ها، سفارشات و هر موضوع دیگری پاسخ دهد. رضایت شما اولویت اول ماست.</p>
+                <a href="{{ url_for('main.about') }}" class="btn-contact-about">درباره‌ی فروشگاه</a>
+            </div>
+        </div>
+
+        <!-- بخش پایینی (اطلاعات تماس) -->
+        <div class="contact-details-wrapper" data-aos="fade-up" data-aos-delay="200">
+            <div class="row align-items-center">
+                <!-- ستون فرم یا نقشه (سمت راست) -->
+                   <div class="col-lg-6">
+                    <!-- در آینده می‌توانید فرم تماس را اینجا قرار دهید -->
+                    <div class='about-image-v2'>
+                        <img  src="{{ url_for('static', filename='assets/img/contact.png') }}" alt="کتابخانه بزرگ">
+
+                    </div>
+                </div>
+                <!-- ستون اطلاعات تماس (سمت چپ) -->
+                <div class="col-lg-6">
+                    <div class="contact-info-box">
+                        <div class="info-header" style="color:#5d4b38">
+                            <h3>با ما تماس بگیرید</h3>
+                        </div>
+                        <ul class="info-list">
+                            <li>
+                                <i class="bi bi-geo-alt"></i>
+                                <div>
+                                    <strong>حضوری تشریف بیاورید</strong>
+                                    <p>تهران، خیابان انقلاب، کوچه کتاب، پلاک ۱۲</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="bi bi-envelope"></i>
+                                <div>
+                                    <strong>به ما ایمیل بزنید</strong>
+                                    <p>info@bookstore.com</p>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="bi bi-telephone"></i>
+                                <div>
+                                    <strong>با ما تماس بگیرید</strong>
+                                    <p>پشتیبانی فنی: ۰۲۱-۱۲۳۴۵۶۷۸<br>کارشناس فروش: ۰۲۱-۸۷۶۵۴۳۲۱</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</main>
+{% endblock %}

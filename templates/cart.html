@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+{% block title %}سبد خرید{% endblock %}
+{% block content %}
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0" style="color: #5d4b38">سبد خرید</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{{ url_for('main.home') }}" style="color: #5d4b38">خانه</a></li>
+            <li class="current">سبد خرید</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Cart Section -->
+    <section id="cart" class="cart section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <form action="{{ url_for('cart.update_cart') }}" method="POST">
+        <div class="row">
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+            <div class="cart-items" style="margin-top: 30px;">
+              <div class="cart-header d-none d-lg-block">
+                <div class="row align-items-center">
+                  <div class="col-lg-6">
+                    <h5>محصول</h5>
+                  </div>
+                  <div class="col-lg-2 text-center">
+                    <h5>قیمت</h5>
+                  </div>
+                  <div class="col-lg-2 text-center">
+                    <h5>تعداد</h5>
+                  </div>
+                  <div class="col-lg-2 text-center">
+                    <h5>جمع خرید</h5>
+                  </div>
+                </div>
+              </div>
+              {% if cart_items %}
+              {% for item in cart_items %}
+              <!-- Cart Item 1 -->
+              <div class="cart-item">
+                <div class="row align-items-center">
+                  <div class="col-lg-6 col-12 mt-3 mt-lg-0 mb-lg-0 mb-3">
+                    <div class="product-info d-flex align-items-center">
+                      <div class="product-image">
+                        <img src="{{ url_for('admin.static', filename='uploads/' + item.product.image_file) }}" alt="{{ item.product.name }}" class="img-fluid" loading="lazy">
+                      </div>
+                      <div class="product-details">
+                        <h6 class="product-title">{{ item.product.name }}</h6>
+                        <div class="product-meta">
+                          <span class="product-color">{{ item.product.author }}</span>
+                        </div>
+                        <a href="{{ url_for('cart.remove_from_cart_form', product_id=item.product.id) }}" class="remove-item text-danger mt-2"
+                        style="background: none; border: none; padding: 0; font-size: 0.9rem; cursor: pointer;">حذف
+                          <i class="bi bi-trash"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+                    <div class="price-tag">
+                      <span class="current-price">{{ "{:,.0f}".format(item.product.price) }}</span>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+                    <div class="quantity-selector">
+                      <button class="quantity-btn decrease">
+                        <i class="bi bi-dash"></i>
+                      </button>
+                      <input type="number" class="quantity-input" name="quantity-{{ item.product.id }}" value="{{ item.quantity }}" min="0" max="10">
+                      <button class="quantity-btn increase">
+                        <i class="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-12 mt-3 mt-lg-0 text-center">
+                    <div class="item-total">
+                      <span>{{ "{:,.0f}".format(item.sum_price) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+  <!-- اگر سبد خرید خالی بود، این پیام را نمایش بده -->
+  <div class="text-center py-5">
+      <h4>سبد خرید شما خالی است.</h4>
+      <a href="{{ url_for('main.home') }}" class="btn btn-primary mt-3" style="background-color: #5d4b38;border:#5d4b38">بازگشت به فروشگاه</a>
+  </div>
+{% endif %}
+              <!-- End Cart Item -->
+              <div class="cart-actions">
+                <div class="row">
+                  <div class="col-lg-12 text-md-end">
+                    {% if cart_items %}
+                    <button type="submit" class="btn btn-outline-heading me-2">
+                      <i class="bi bi-arrow-clockwise"></i> بروزرسانی سبد خرید
+                    </button>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+            {% if cart_items %}
+            <div class="cart-summary" style="margin: 30px;margin-right: 0px;margin-left: 0px;padding-bottom: 0px;">
+              <h4 class="summary-title">فاکتور سفارشات</h4>
+              <div class="summary-item">
+                <span class="summary-label">جمع خرید</span>
+                <span class="summary-value">{{ "{:,.0f}".format(total_price) }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">پست پیشتاز</span>
+                <span class="summary-value">50/000 </span>
+              </div>
+              <div class="summary-total">
+                <span class="summary-label">جمع کل</span>
+                <span class="summary-value"> تومان {{ "{:,.0f}".format(total_price+50000)}}</span>
+              </div>
+              <div class="checkout-button">
+                <a href="{{ url_for('cart.checkout') }}" class="btn btn-accent w-100">
+                  تکمیل خرید<i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+              <div class="continue-shopping">
+                <a href="{{url_for('main.shop')}}" class="btn btn-link w-100">
+                  <i class="bi bi-arrow-left"></i> فروشگاه
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+
+    </section><!-- /Cart Section -->
+
+  </main>
+{% endblock %}

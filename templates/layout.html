@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+   <title>{% block title %}فروشگاه کتاب{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/img/favicon.png') }}">
+  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='assets/vendor/drift-zoom/drift-basic.css')}}" rel="stylesheet">
+  <!-- Main CSS File -->
+  <link href="{{ url_for('static', filename='assets/css/main.css')}}" rel="stylesheet">
+  <style>
+        @media print {
+            /* در هنگام چاپ، این عناصر را مخفی کن */
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+  <style>
+    /* استایل‌های بخش Hero نهایی (بر اساس تصویر شما) */
+.hero-final-section {
+    position: relative;
+    padding: 120px 0;
+    overflow: hidden;
+    direction: rtl;
+}
+
+/* تصویر پس‌زمینه */
+.hero-final-section .hero-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("{{ url_for('static', filename='assets/img/4.jpeg') }}");
+    background-position: center;
+    z-index: 1;
+}
+
+/* لایه نیمه‌شفاف */
+.hero-final-section .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* گرادیانت سفید که از راست به چپ محو می‌شود */
+    background: linear-gradient(to left, rgb(245, 241, 226) 50%, rgba(250, 249, 245, 0.8) 60%, rgba(250, 249, 245, 0) 100%);
+    z-index: 2;
+}
+
+.hero-final-section .hero-container {
+    position: relative;
+    z-index: 3; /* محتوا را روی همه لایه‌ها قرار می‌دهد */
+}
+
+.hero-final-content {
+    text-align: right;
+    padding-left: 30px; /* ایجاد فاصله از مرکز */
+}
+.hero-final-content .hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #4B4453; /* رنگ خاکستری-بنفش تیره */
+    line-height: 1.4;
+}
+.hero-final-content .hero-description {
+    font-size: 1rem;
+    color: #6c757d;
+    margin: 20px 0 30px;
+    max-width: 450px; /* محدود کردن عرض پاراگراف */
+}
+
+/* استایل دقیق دکمه */
+.btn-cta-final {
+    display: inline-block;
+    background-color: #5D4B38; /* رنگ بنفش دقیق از تصویر */
+    color: #fff;
+    padding: 12px 35px;
+    border-radius: 8px; /* گوشه‌های گرد، نه کاملاً دایره‌ای */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgb(93, 75, 56);
+}
+.btn-cta-final:hover {
+    background-color: #5D4B38;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgb(93, 75, 56);
+}
+
+/* استایل دقیق آیکون‌های در یک ردیف */
+.hero-features-final {
+    display: flex;
+    gap: 25px; /* فاصله بین آیتم‌ها */
+    margin-top: 35px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+.hero-features-final .feature-item { display: flex; align-items: center; }
+.hero-features-final .feature-item i { font-size: 1.1rem; color: #4B4453; margin-left: 8px; }
+
+/* === بخش ریسپانسیو === */
+@media (max-width: 992px) {
+    .hero-final-section .hero-overlay {
+        /* در موبایل، کل پس‌زمینه را نیمه‌شفاف می‌کنیم */
+        background: rgba(245, 247, 250, 0.9);
+    }
+    .hero-final-content {
+        text-align: center;
+        padding-left: 0;
+    }
+    .hero-features-final {
+        justify-content: center;
+    }
+}
+  </style>
+
+</head>
+
+<body class="starter-page-page">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="min-width: 300px;">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<!-- پایان کد پیام‌های فلش -->
+
+ <header id="header" class="header no-print sticky-top">
+    <!-- Top Bar -->
+    <div class="top-bar py-2">
+      <div class="container-fluid container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-6 d-none d-lg-flex">
+            <div class="top-bar-item">
+              <i class="bi bi-telephone-fill me-2"></i>
+              <span>تماس با ما: </span>
+              <a href="tel:+1234567890">+1 (234) 567-890</a>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <div class="announcement-slider swiper init-swiper">
+              <script type="application/json" class="swiper-config">
+                {
+                  "loop": true,
+                  "speed": 600,
+                  "autoplay": {
+                    "delay": 5000
+                  },
+                  "slidesPerView": 1,
+                  "direction": "vertical",
+                  "effect": "slide"
+                }
+              </script>
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">🚚 ارسال فوری </div>
+                <div class="swiper-slide">💰 بهترین قیمت </div>
+                <div class="swiper-slide">🎁 تخفیف های باور نکردنی </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <div class="main-header">
+      <div class="container-fluid container-xl">
+        <div class="d-flex py-3 align-items-center justify-content-between">
+
+          <!-- Logo -->
+          <a href="{{ url_for('main.home') }}" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="{{ url_for('static', filename='assets/img/logo.webp') }}" alt=""> -->
+            <h1 class="sitename">فروشگاه کتاب</h1>
+          </a>
+
+          <!-- Search -->
+          <form action="{{ url_for('main.search') }}" method="GET" class="search-form desktop-search-form">
+            <div class="input-group">
+              <input name="query" type="text" class="form-control" placeholder="جستجو">
+              <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Actions -->
+          <div class="header-actions d-flex align-items-center justify-content-end">
+
+            <!-- Mobile Search Toggle -->
+            <button class="header-action-btn mobile-search-toggle d-xl-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false" aria-controls="mobileSearch">
+              <i class="bi bi-search"></i>
+            </button>
+            <!-- Cart -->
+            <a href="{{ url_for('cart.view_cart') }}" class="header-action-btn">
+              <i class="bi bi-cart3"></i>
+              <span class="badge">{{items_count}}</span>
+            </a>
+
+            <!-- Mobile Navigation Toggle -->
+            <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+      <div class="container-fluid container-xl position-relative">
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{{ url_for('main.home') }}">صفحه اصلی</a></li>
+            <li><a href="{{ url_for('main.shop') }}">فروشگاه</a></li>
+            <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
+            <li><a href="{{ url_for('main.contact') }}">تماس با ما</a></li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Search Form -->
+    <div class="collapse" id="mobileSearch">
+      <div class="container">
+        <form action="{{ url_for('main.search') }}" method="GET" class="search-form">
+          <div class="input-group">
+            <input type="text" name="query" class="form-control" placeholder="جستجو">
+            <button class="btn" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+<!-- ======================================================= -->
+<!--            فوتر جدید، سفارشی و حرفه‌ای                  -->
+<!-- ======================================================= -->
+<footer id="footer" class="footer-bookstore no-print">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row gy-4">
+
+                <!-- ستون ۱: درباره ما -->
+                <div class="col-lg-4 col-md-12 footer-about">
+                    <a href="{{ url_for('main.home') }}" class="logo d-flex align-items-center">
+                        <h4>فروشگاه کتاب ما</h4>
+                    </a>
+                    <p>ما باور داریم که هر کتاب، دریچه‌ای به سوی دنیایی جدید است. فروشگاه ما با عشق به کلمات و داستان‌ها شکل گرفت تا بهترین آثار را در اختیار شما قرار دهد.</p>
+                    <div class="social-links d-flex mt-4">
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <!-- ستون ۲: لینک‌های سریع -->
+                <div class="col-lg-2 col-6 footer-links">
+                    <h4>لینک‌های سریع</h4>
+                    <ul>
+                        <li><a href="{{ url_for('main.home') }}">صفحه اصلی</a></li>
+                        <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
+                        <li><a href="{{ url_for('main.shop') }}">فروشگاه</a></li>
+                        <li><a href="{{ url_for('main.contact') }}">تماس با ما</a></li>
+                        <li> <a href="{{ url_for('admin.login') }}">ورود به پنل مدیریت</a></li>
+                    </ul>
+                </div>
+
+                <!-- ستون ۳: اطلاعات تماس -->
+                <div class="col-lg-3 col-6 footer-contact">
+                    <h4>اطلاعات تماس</h4>
+                    <p>
+                        تهران، خیابان انقلاب<br>
+                        کوچه کتاب، پلاک ۱۲<br><br>
+                        <strong>تلفن:</strong> ۰۲۱-۱۲۳۴۵۶۷۸<br>
+                        <strong>ایمیل:</strong> info@bookstore.com<br>
+                    </p>
+                </div>
+
+                <!-- ستون ۴: تصویر کتابخانه -->
+                <div class="col-lg-3 col-md-12 footer-image-area">
+                    <img src="{{ url_for('static', filename='assets/img/Bookshelf.png') }}" alt="کتابخانه"  class="img-fluid">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="copyright">
+            &copy; تمامی حقوق برای <strong><span>فروشگاه کتاب ما</span></strong> محفوظ است.
+        </div>
+    </div>
+</footer>
+<!-- ======================================================= -->
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/drift-zoom/Drift.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+
+<!-- Contact Javascript File -->
+<script src="{{ url_for('static', filename='mail/jqBootstrapValidation.min.js') }}"></script>
+<script src="{{ url_for('static', filename='mail/contact.js') }}"></script>
+
+<!-- Template Javascript -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+
+</body>
+
+</html>

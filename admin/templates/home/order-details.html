@@ -1,0 +1,85 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} جزئیات سفارش #{{ order.id }} {% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <!-- سربرگ اصلی که دوست داشتید -->
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">جزئیات سفارش #{{ order.id }}</h6>
+                    </div>
+                </div>
+
+                <div class="card-body px-4 pb-3">
+                    <!-- بخش اطلاعات بالایی با استفاده از گرید برای تراز بندی دقیق -->
+                    <div class="row mb-4">
+                        <!-- ستون اطلاعات مشتری -->
+                        <div class="col-md-6">
+                            <h5 class="font-weight-bolder">اطلاعات مشتری:</h5>
+                            <p class="mb-1"><strong>نام:</strong> {{ order.customer_name }}</p>
+                            <p class="mb-1"><strong>آدرس:</strong> {{ order.customer_address }}</p>
+                            <p class="mb-0"><strong>تلفن:</strong> {{ order.customer_phone }}</p>
+                        </div>
+                        <!-- ستون اطلاعات سفارش (راست‌چین شده در دسکتاپ) -->
+                        <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                            <h5 class="font-weight-bolder">اطلاعات سفارش:</h5>
+                            <p class="mb-1"><strong>تاریخ ثبت:</strong> {{ order.order_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p class="mb-1"><strong>وضعیت:</strong> <span class="badge badge-sm bg-gradient-{{ 'warning' if order.status == 'Pending' else 'success' }}">{{ order.status }}</span></p>
+                            <p class="mb-0"><strong>هزینه پست :</strong> <span class="font-weight-bold"> 50/000 تومان </span></p>
+                            <p class="mb-0"><strong>مبلغ کل:</strong> <span class="font-weight-bold">{{ "{:,.0f}".format(order.total_price+50000) }} تومان</span></p>
+                        </div>
+                    </div>
+
+                    <hr class="horizontal dark">
+
+                    <!-- بخش لیست محصولات با جدول تمیز و تراز شده -->
+                    <div class="mt-4">
+                        <h5 class="font-weight-bolder">محصولات خریداری شده:</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">محصول</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">قیمت واحد</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">تعداد</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-end">جمع</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <img src="{{ url_for('admin.static', filename='uploads/' + item.product.image_file) }}" class="avatar avatar-sm me-3 border-radius-lg">
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ item.product.name }}</h6>
+                                                    <p class="text-xs text-secondary mb-0">{{ item.product.author }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-center">{{ "{:,.0f}".format(item.product.price) }} تومان</td>
+                                        <td class="align-middle text-center">{{ item.quantity }}</td>
+                                        <td class="align-middle text-end font-weight-bold">{{ "{:,.0f}".format(item.product.price * item.quantity) }} تومان</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- دکمه بازگشت -->
+                    <div class="mt-4">
+                        <a href="{{ url_for('admin.list_orders') }}" class="btn btn-outline-primary">بازگشت به لیست سفارشات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

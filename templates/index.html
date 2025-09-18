@@ -1,0 +1,281 @@
+{% extends "layout.html" %}
+{% block title %}صفحه اصلی - فروشگاه کتاب{% endblock %}
+{% block content %}
+<main class="main">
+    <!-- Hero Section -->
+    <section id="hero" class="hero-final-section section">
+  <!-- تصویر پس‌زمینه که کل بخش را پوشش می‌دهد -->
+  <div class="hero-background-image"></div>
+  <!-- یک لایه نیمه‌شفاف برای خوانایی بهتر متن -->
+  <div class="hero-overlay"></div>
+
+  <div class="container hero-container">
+    <div class="row align-items-center">
+      <!-- ستون محتوای متنی -->
+      <div class="col-lg-7">
+        <div class="hero-final-content" data-aos="fade-up">
+          <h1 class="hero-title">جهان‌ها را بین صفحات کشف کنید</h1>
+          <p class="hero-description">
+            در مجموعه‌ای دست‌چین شده از داستان‌های شگفت‌انگیز و دانش عمیق غرق شوید. از رمان‌های کلاسیک تا جدیدترین عناوین علمی، کتاب بعدی خود را پیدا کنید و سفرتان را آغاز کنید.
+          </p>
+          <a href="{{ url_for('main.shop') }}" class="btn-cta-final" data-aos="fade-up" data-aos-delay="100">کاوش در مجموعه</a>
+          <div class="hero-features-final" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-item">
+              <i class="bi bi-truck"></i>
+              <span>ارسال رایگان</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-patch-check-fill"></i>
+              <span>تضمین کیفیت</span>
+            </div>
+            <div class="feature-item">
+              <i class="bi bi-headset"></i>
+              <span>پشتیبانی ۲۴ ساعته</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ستون سمت چپ خالی می‌ماند تا پس‌زمینه دیده شود -->
+      <div class="col-lg-5"></div>
+    </div>
+  </div>
+</section>
+  <!-- /Hero Section -->
+    <!-- Promo Cards Section -->
+    <section id="promo-cards" class="promo-cards section" dir="ltr">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+            <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
+              <div class="category-image">
+                <img src="{{ url_for('static', filename='assets/img/222.png') }}"  class="img-fluid">
+              </div>
+              <div class="category-content" >
+                <span class="category-tag"> پیشنهاد ویژه</span>
+                <h2>مجموعه جدید آثار کلاسیک</h2>
+                <p>شاهکارهای ادبی جهان را که هر کتاب‌خوانی باید بخواند، دوباره کشف کنید.</p>
+                <a href="{{ url_for('main.view_by_category', category_id=categories[0].id) }}" class="btn-shop">مشاهده مجموعه <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row gy-4">
+              <div class="col-xl-6">
+                <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="300">
+                  <div class="category-image">
+                    <img src="{{ url_for('static', filename='assets/img/333.png') }}" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>رمان</h4>
+                    <p>دنیای رمان</p>
+                    <a href="{{ url_for('main.view_by_category', category_id=categories[1].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="category-card cat-kids" data-aos="fade-up" data-aos-delay="400">
+                  <div class="category-image">
+                    <img src="{{ url_for('static', filename='assets/img/555.png') }}" class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>کتاب‌های تاریخی</h4>
+                    <p>قلب تاریخ</p>
+                    <a href="{{ url_for('main.view_by_category', category_id=categories[2].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="500">
+                  <div class="category-image">
+                    <img src="{{ url_for('static', filename='assets/img/666.png') }}"  class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>روانشناسی</h4>
+                    <p>بازآفرینی خود</p>
+                    <a href="{{ url_for('main.view_by_category', category_id=categories[3].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-6">
+                <div class="category-card cat-accessories" data-aos="fade-up" data-aos-delay="600">
+                  <div class="category-image">
+                    <img src="{{ url_for('static', filename='assets/img/777.png') }}"  class="img-fluid">
+                  </div>
+                  <div class="category-content">
+                    <h4>علمی-تخیلی</h4>
+                    <p>تخیل با علم</p>
+                    <a href="{{ url_for('main.view_by_category', category_id=categories[4].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- /Promo Cards Section -->
+     <!-- New Sellers Section -->
+    <section id="newest-products" class="newest-products-section section">
+  <div class="container">
+    <!-- عنوان بخش -->
+    <div class="section-title-v3 text-center">
+      <h2>جدیدترین محصولات</h2>
+      <p>کتاب‌هایی که به تازگی به کتابخانه ما اضافه شده‌اند!</p>
+    </div>
+
+    <div class="row gy-4">
+      <!-- حلقه برای ساخت کارت برای هر محصول پرفروش -->
+      {% for product in newest_products %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-card-v3">
+          <div class="product-image-wrapper-v3">
+            <!-- نکته: منطق تخفیف در آینده اضافه خواهد شد -->
+            <!-- <div class="discount-badge-v3">۸٪</div> -->
+            <a href="{{ url_for('main.product_detail', product_id=product.id) }}">
+              <img src="{{ url_for('admin.static', filename='uploads/' + product.image_file) }}" alt="{{ product.name }}">
+            </a>
+          </div>
+          <div class="product-details-v3">
+            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
+            <p class="product-author-v3">{{ product.author }}</p>
+            <div class="price-and-cart">
+              <div class="product-price-v3">
+                <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>
+                <!-- <span class="original-price-v3">۲۹۹,۰۰۰ تومان</span> -->
+              </div>
+              <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="POST">
+                <button type="submit" class="add-to-cart-btn-v3">افزودن به سبد</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- New Sellers Section -->
+    <!-- Best Sellers Section -->
+    <section id="bestsellers" class="bestsellers-section section">
+  <div class="container">
+    <!-- عنوان بخش -->
+    <div class="section-title-v3 text-center">
+      <h2>پرفروش‌ترین محصولات</h2>
+      <p>محصولاتی که بیشترین خواهان را دارند!</p>
+    </div>
+    <div class="row gy-4">
+      <!-- حلقه برای ساخت کارت برای هر محصول پرفروش -->
+      {% for product in best_selling %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-card-v3">
+          <div class="product-image-wrapper-v3">
+            <!-- نکته: منطق تخفیف در آینده اضافه خواهد شد -->
+            <!-- <div class="discount-badge-v3">۸٪</div> -->
+            <a href="{{ url_for('main.product_detail', product_id=product.id) }}">
+              <img src="{{ url_for('admin.static', filename='uploads/' + product.image_file) }}" alt="{{ product.name }}">
+            </a>
+          </div>
+          <div class="product-details-v3">
+            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
+            <p class="product-author-v3">{{ product.author }}</p>
+            <div class="price-and-cart">
+              <div class="product-price-v3">
+                <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>
+                <!-- <span class="original-price-v3">۲۹۹,۰۰۰ تومان</span> -->
+              </div>
+              <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="POST">
+                <button type="submit" class="add-to-cart-btn-v3">افزودن به سبد</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- /Best Sellers Section -->
+    <!--  بخش اسلایدر ناشران  -->
+    <section id="featured-publishers" class="featured-publishers-section">
+  <div class="container">
+    <!-- عنوان بخش -->
+    <div class="section-title-v2 text-center">
+      <h2>ناشران برجسته</h2>
+      <p>آثار بهترین ناشران کشور را در فروشگاه ما پیدا کنید.</p>
+    </div>
+    <!-- استفاده از کلاس‌های گرید ریسپانسیو برای ۵ ستون -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 g-4">
+      <!-- حلقه برای ساخت کارت برای هر ناشر -->
+      {% for publisher in publishers %}
+      <div class="col">
+        <a href="{{ url_for('main.view_by_publisher', publisher_id=publisher.id) }}" class="publisher-showcase-card">
+          <div class="publisher-image">
+            <img src="{{ url_for('admin.static', filename='uploads/' + publisher.logo_file) }}" alt="{{ publisher.name }}" class="img-fluid">
+          </div>
+          <div class="publisher-details">
+            <h6>{{ publisher.name }}</h6>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+    <!--  بخش "چرا باید ما را انتخاب کنید؟-->
+    <section id="why-us" class="why-us-section section">
+  <div class="container">
+    <div class="why-us-container" data-aos="fade-up">
+      <!-- بخش تصویر (سمت راست) -->
+      <div class="why-us-image" data-aos="fade-right" data-aos-delay="100">
+        <img src="{{ url_for('static', filename='assets/img/111.png') }}" alt="مجموعه‌ای از کتاب‌های کلاسیک">
+      </div>
+
+      <!-- بخش محتوا (سمت چپ) -->
+      <div class="why-us-content" data-aos="fade-left" data-aos-delay="200">
+        <div class="section-title-v5">
+          <h2>چرا باید ما را انتخاب کنید؟</h2>
+        </div>
+        <p class="why-us-description">
+          ما فقط کتاب نمی‌فروشیم؛ ما عشق به خواندن را به اشتراک می‌گذاریم. هر کتاب در مجموعه ما با دقت انتخاب شده تا بهترین تجربه را برای شما رقم بزند. از پشتیبانی تخصصی تا تحویل سریع، ما اینجا هستیم تا سفر شما در دنیای کلمات را لذت‌بخش کنیم.
+        </p>
+        <div class="features-grid">
+          <!-- آیتم ۱ -->
+          <div class="feature-item">
+            <div class="feature-icon icon-1">
+              <i class="bi bi-patch-check"></i>
+            </div>
+            <span>تضمین اصالت و کیفیت</span>
+          </div>
+          <!-- آیتم ۲ -->
+          <div class="feature-item">
+            <div class="feature-icon icon-2">
+              <i class="bi bi-truck"></i>
+            </div>
+            <span>ارسال سریع و مطمئن</span>
+          </div>
+          <!-- آیتم ۳ -->
+          <div class="feature-item">
+            <div class="feature-icon icon-3">
+              <i class="bi bi-tags"></i>
+            </div>
+            <span>قیمت‌های رقابتی</span>
+          </div>
+          <!-- آیتم ۴ -->
+          <div class="feature-item">
+            <div class="feature-icon icon-4">
+              <i class="bi bi-headset"></i>
+            </div>
+            <span>پشتیبانی تخصصی کتاب</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    <!-- ======================================================= -->
+</main>
+{% endblock %}

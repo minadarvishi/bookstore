@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} مدیریت سفارشات {% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                        <h6 class="text-white text-capitalize ps-3">لیست سفارشات</h6>
+                    </div>
+                </div>
+
+                <!-- دکمه‌های فیلتر -->
+                <div class="card-header border-bottom">
+                    <a href="{{ url_for('admin.list_orders') }}" class="btn btn-sm {% if not current_filter %}btn-primary{% else %}btn-outline-primary{% endif %} m-1">همه</a>
+                    <a href="{{ url_for('admin.list_orders', status='Pending') }}" class="btn btn-sm {% if current_filter == 'Pending' %}btn-warning{% else %}btn-outline-warning{% endif %} m-1">در انتظار</a>
+                    <a href="{{ url_for('admin.list_orders', status='Posted') }}" class="btn btn-sm {% if current_filter == 'Posted' %}btn-success{% else %}btn-outline-success{% endif %} m-1">ارسال شده</a>
+                </div>
+
+                <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <!-- سرتیتر جدول -->
+                            <thead>
+                                <tr>
+                                    <th>شماره سفارش</th>
+                                    <th>نام مشتری</th>
+                                    <th>تاریخ</th>
+                                    <th>مبلغ کل</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>{{ order.customer_name }}</td>
+                                    <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>{{ "{:,.0f}".format(order.total_price) }} تومان</td>
+                                    <td>
+                                        <span class="badge badge-sm bg-gradient-{{ 'warning' if order.status == 'Pending' else 'success' }}">{{ order.status }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.order_details', order_id=order.id) }}" class="text-secondary font-weight-bold text-xs">جزئیات</a>
+                                        <!-- دکمه "ارسال شد" فقط برای سفارشات در انتظار نمایش داده می‌شود -->
+                                        {% if order.status == 'Pending' %}
+                                        <form action="{{ url_for('admin.posted_product', order_id=order.id) }}" method="POST" style="display: inline; margin-left: 10px;">
+                                            <button type="submit" class="btn btn-sm btn-outline-success m-1" title="علامت‌گذاری به عنوان ارسال شده">
+                                                <i class="fa fa-check" aria-hidden="true"></i> ارسال
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">هیچ سفارشی با این فیلتر یافت نشد.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
