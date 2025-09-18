@@ -42,12 +42,13 @@
 </section>
   <!-- /Hero Section -->
     <!-- Promo Cards Section -->
-  {% if categories %}
+
     <section id="promo-cards" class="promo-cards section" dir="ltr">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-4">
           <div class="col-lg-6">
+             {% if categories and categories|length > 0 %}
             <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
               <div class="category-image">
                 <img src="{{ url_for('static', filename='assets/img/222.png') }}"  class="img-fluid">
@@ -59,10 +60,12 @@
                 <a href="{{ url_for('main.view_by_category', category_id=categories[0].id) }}" class="btn-shop">مشاهده مجموعه <i class="bi bi-arrow-right"></i></a>
               </div>
             </div>
+            {% endif %}
           </div>
           <div class="col-lg-6">
             <div class="row gy-4">
               <div class="col-xl-6">
+                 {% if categories and categories|length > 1 %}
                 <div class="category-card cat-men" data-aos="fade-up" data-aos-delay="300">
                   <div class="category-image">
                     <img src="{{ url_for('static', filename='assets/img/333.png') }}" class="img-fluid">
@@ -73,9 +76,11 @@
                     <a href="{{ url_for('main.view_by_category', category_id=categories[1].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
                   </div>
                 </div>
+                {% endif %}
               </div>
 
               <div class="col-xl-6">
+                {% if categories and categories|length > 2 %}
                 <div class="category-card cat-kids" data-aos="fade-up" data-aos-delay="400">
                   <div class="category-image">
                     <img src="{{ url_for('static', filename='assets/img/555.png') }}" class="img-fluid">
@@ -86,9 +91,11 @@
                     <a href="{{ url_for('main.view_by_category', category_id=categories[2].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
                   </div>
                 </div>
+                {% endif %}
               </div>
 
               <div class="col-xl-6">
+                {% if categories and categories|length > 3 %}
                 <div class="category-card cat-cosmetics" data-aos="fade-up" data-aos-delay="500">
                   <div class="category-image">
                     <img src="{{ url_for('static', filename='assets/img/666.png') }}"  class="img-fluid">
@@ -99,9 +106,11 @@
                     <a href="{{ url_for('main.view_by_category', category_id=categories[3].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
                   </div>
                 </div>
+                {% endif %}
               </div>
 
               <div class="col-xl-6">
+                {% if categories and categories|length > 3 %}
                 <div class="category-card cat-accessories" data-aos="fade-up" data-aos-delay="600">
                   <div class="category-image">
                     <img src="{{ url_for('static', filename='assets/img/777.png') }}"  class="img-fluid">
@@ -112,6 +121,7 @@
                     <a href="{{ url_for('main.view_by_category', category_id=categories[4].id) }}" class="card-link">مشاهده<i class="bi bi-arrow-right"></i></a>
                   </div>
                 </div>
+                {% endif %}
               </div>
 
             </div>
@@ -176,8 +186,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="product-card-v3">
           <div class="product-image-wrapper-v3">
-            <!-- نکته: منطق تخفیف در آینده اضافه خواهد شد -->
-            <!-- <div class="discount-badge-v3">۸٪</div> -->
+
             <a href="{{ url_for('main.product_detail', product_id=product.id) }}">
               <img src="{{ url_for('admin.static', filename='uploads/' + product.image_file) }}" alt="{{ product.name }}">
             </a>
@@ -188,7 +197,6 @@
             <div class="price-and-cart">
               <div class="product-price-v3">
                 <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>
-                <!-- <span class="original-price-v3">۲۹۹,۰۰۰ تومان</span> -->
               </div>
               <form action="{{ url_for('cart.add_to_cart', product_id=product.id) }}" method="POST">
                 <button type="submit" class="add-to-cart-btn-v3">افزودن به سبد</button>
