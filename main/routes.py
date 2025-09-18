@@ -8,7 +8,7 @@ def home():
 
     products = Product.query.filter(Product.stock > 0).order_by(Product.id.desc()).all()
     newest_products = Product.query.filter(Product.stock > 0).order_by(Product.id.desc()).limit(8).all()
-    best_selling = services.get_best_selling_products(limit=5)
+    best_selling = services.get_best_selling_products(limit=4)
     publishers = Publisher.query.limit(6).all()
     categories = Category.query.all()
     return render_template("index.html", products=products, publishers=publishers
