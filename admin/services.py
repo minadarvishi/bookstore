@@ -70,6 +70,8 @@ def update_existing_product(product,form_data,img):
 
     if img and img.filename != '':
         product.image_file = save_product_img(img)
+    else:
+        product.image_file ='default.jpg'
     try:
         db.session.commit()
         return True
