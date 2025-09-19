@@ -200,12 +200,14 @@ def update_publisher(publisher, form_data, logo_file):
             return False, "نام ناشر نمی‌تواند خالی باشد."
         publisher.name = new_name
         if logo_file and logo_file.filename != '':
-            old_logo_path = None
-            if publisher.logo_file and publisher.logo_file != 'default-logo.png':
-                old_logo_path = os.path.join(current_app.static_folder, 'uploads', publisher.logo_file)
+            old_logo_to_delete = publisher.logo_file
             publisher.logo_file = save_product_img(logo_file)
-            if old_logo_path and os.path.exists(old_logo_path):
-                os.remove(old_logo_path)
+            if old_logo_to_delete and old_logo_to_delete != 'default_publisher.jpg':
+                old_logo_path = os.path.join(current_app.static_folder, 'uploads', old_logo_to_delete)
+                if os.path.exists(old_logo_path):
+                    os.remove(old_logo_path)
+        else:
+            publisher.logo_file = 'default_publisher.jpg'
         db.session.commit()
         return True, "ناشر با موفقیت به‌روزرسانی شد."
     except IntegrityError:
