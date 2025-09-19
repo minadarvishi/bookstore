@@ -40,7 +40,7 @@
                             </a>
                         </div>
                         <div class="product-details-v3">
-                            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
+                            <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3" style="color: #333;">{{ product.name }}</a>
                                     {{ product.author }}
         {% if product.publisher %}
             <span class="text-muted">| {{ product.publisher.name }}</span>
