@@ -152,7 +152,10 @@
           </div>
           <div class="product-details-v3">
             <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
-            <p class="product-author-v3">{{ product.author }}</p>
+                    {{ product.author }}
+        {% if product.publisher %}
+            <span class="text-muted">| {{ product.publisher.name }}</span>
+        {% endif %}
             <div class="price-and-cart">
               <div class="product-price-v3">
                 <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>
@@ -190,7 +193,10 @@
           </div>
           <div class="product-details-v3">
             <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
-            <p class="product-author-v3">{{ product.author }}</p>
+                    {{ product.author }}
+        {% if product.publisher %}
+            <span class="text-muted">| {{ product.publisher.name }}</span>
+        {% endif %}
             <div class="price-and-cart">
               <div class="product-price-v3">
                 <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>

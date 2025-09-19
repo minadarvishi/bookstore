@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
-{% if page_title %}{{ page_title }}{% endif %}
+{% block title %}
+  {% if page_title %}{{ page_title }}{% endif %}
+{% endblock %}
 {% block content %}
 <main class="main">
 <div class="container-fluid pt-5">
@@ -8,15 +10,20 @@
         <div class="col-lg-12">
             <!-- نوار مرتب‌سازی -->
             <div class="d-flex justify-content-between align-items-center border-bottom mb-4 pb-3">
-                <h4 class="font-weight-semi-bold m-0">فروشگاه</h4>
+                <h4 class="font-weight-semi-bold m-0">{{ page_title }}</h4>
                 <div class="dropdown ml-4">
                     <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         مرتب‌سازی بر اساس
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                        <a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}" href="{{ url_for('main.shop', sort='newest') }}">جدیدترین</a>
-                        <a class="dropdown-item {% if current_sort == 'price_asc' %}active{% endif %}" href="{{ url_for('main.shop', sort='price_asc') }}">ارزان‌ترین</a>
-                        <a class="dropdown-item {% if current_sort == 'price_desc' %}active{% endif %}" href="{{ url_for('main.shop', sort='price_desc') }}">گران‌ترین</a>
+                        <a class="dropdown-item {% if current_sort == 'newest' %}active{% endif %}"
+   href="{{ url_for(request.endpoint, sort='newest', query=query, category_id=category_id, publisher_id=publisher_id) }}">جدیدترین</a>
+
+<a class="dropdown-item {% if current_sort == 'price_asc' %}active{% endif %}"
+   href="{{ url_for(request.endpoint, sort='price_asc', query=query, category_id=category_id, publisher_id=publisher_id) }}">ارزان‌ترین</a>
+
+<a class="dropdown-item {% if current_sort == 'price_desc' %}active{% endif %}"
+   href="{{ url_for(request.endpoint, sort='price_desc', query=query, category_id=category_id, publisher_id=publisher_id) }}">گران‌ترین</a>
                     </div>
                 </div>
             </div>
@@ -34,7 +41,10 @@
                         </div>
                         <div class="product-details-v3">
                             <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-title-v3">{{ product.name }}</a>
-                            <p class="product-author-v3">{{ product.author }}</p>
+                                    {{ product.author }}
+        {% if product.publisher %}
+            <span class="text-muted">| {{ product.publisher.name }}</span>
+        {% endif %}
                             <div class="price-and-cart">
                                 <div class="product-price-v3">
                                     <span class="current-price-v3">{{ "{:,.0f}".format(product.price) }} تومان</span>
