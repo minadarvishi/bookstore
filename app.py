@@ -3,11 +3,22 @@ from extensions import db
 from admin.routes import admin_bp
 from main.routes import main_bp
 from cart.routes import cart_bp
+from extensions import login_manager
 import os
+
+
+
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'a-super-secret-key-that-no-one-can-guess'
+
+
+    #userlogin
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+
+
 
     # --- اتصال هوشمند به دیتابیس ---
     db_url = os.environ.get('DATABASE_URL')
