@@ -3,6 +3,7 @@ from flask import request, redirect, url_for, flash,session
 from models import Product, Category, Order, Publisher
 from . import services
 from .decorators import admin_required
+
 admin_bp = Blueprint('admin', __name__,template_folder='templates',static_folder='static')
 @admin_bp.route('/dashboard')
 @admin_required

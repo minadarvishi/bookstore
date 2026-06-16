@@ -4,6 +4,7 @@ from admin.routes import admin_bp
 from main.routes import main_bp
 from cart.routes import cart_bp
 from extensions import login_manager
+from auth.routes import auth_bp
 import os
 
 
@@ -16,7 +17,7 @@ def create_app():
 
     #userlogin
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
+    login_manager.login_view = 'auth.login'
 
 
 
@@ -37,6 +38,7 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(cart_bp)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     #  ساخت دیتابیس
     @app.cli.command('init-db')

@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 # مدل‌های پایگاه داده
-from extensions import db , login_manager
+from extensions import db
 
 
 class Product(db.Model):
@@ -85,7 +85,3 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}')"
 
-#userlogin
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
