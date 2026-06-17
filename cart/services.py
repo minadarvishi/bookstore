@@ -46,7 +46,7 @@ def update_cart_quantity(form_data):
         session['cart'] = cart
     return True
 
-def create_order(customer_info):
+def create_order(customer_info , user):
     cart_items, total_price =get_cart_data()
     if not cart_items:
         return None, "سبد خرید شما خالی است."
@@ -62,6 +62,7 @@ def create_order(customer_info):
             customer_phone=customer_info.get('customer_phone'),
             customer_address=customer_info.get('customer_address'),
             total_price=total_price,
+            user_id = user.id if user.is_authenticated else None
         )
 
         for item in cart_items:
@@ -74,6 +75,7 @@ def create_order(customer_info):
             new_order.items.append(order_item)
 
         db.session.add(new_order)
+        db.session.flush()
         db.session.commit()
         session.pop('cart',None)
 

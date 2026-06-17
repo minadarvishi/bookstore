@@ -1,5 +1,5 @@
 from flask import Flask, render_template,session
-from extensions import db
+from extensions import db , migrate
 from admin.routes import admin_bp
 from main.routes import main_bp
 from cart.routes import cart_bp
@@ -14,13 +14,6 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'a-super-secret-key-that-no-one-can-guess'
 
-
-    #userlogin
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-
-
-
     # --- اتصال هوشمند به دیتابیس ---
     db_url = os.environ.get('DATABASE_URL')
     if not db_url:
@@ -32,7 +25,12 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+    migrate.init_app(app,db,render_as_batch=True)
+
     # ------------------------------------
+    #userlogin
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
 
     # --- ثبت کردن Blueprintها ---
     app.register_blueprint(main_bp)

@@ -241,8 +241,33 @@
             <li><a href="{{ url_for('main.shop') }}">فروشگاه</a></li>
             <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
             <li><a href="{{ url_for('main.contact') }}">تماس با ما</a></li>
+            {% if current_user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link text-warning" href="{{ url_for('auth.my_orders') }}">سفارشات من</a>
+    </li>
+    <!-- بقیه لینک‌ها مثل خروج -->
+{% endif %}
 
           </ul>
+
+          <ul class="navbar-nav ms-auto">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <span class="nav-link text-light">خوش آمدید، {{ current_user.name }}</span>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">خروج</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">ورود</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.register') }}">ثبت‌نام</a>
+            </li>
+              {% endif %}
+          </ul>
+          
         </nav>
       </div>
     </div>

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>تاریخچه سفارشات من</h2>
+    <hr>
+    
+    {% if orders %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>شماره سفارش</th>
+                    <th>تاریخ</th>
+                    <th>مبلغ کل</th>
+                    <th>وضعیت</th>
+                    <th>جزئیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ "{:,}".format(order.total_price) }} تومان</td>
+                    <td>
+                        <span class="badge {% if order.status == 'Pending' %}bg-warning{% else %}bg-success{% endif %}">
+                            {{ order.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('auth.order_detail', order_id=order.id) }}" class="btn btn-sm btn-info">
+        مشاهده فاکتور
+    </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</div>
+    {% endif %}
+</div>
+{% endblock %}

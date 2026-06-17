@@ -1,4 +1,4 @@
-from models import User, db
+from models import User, db , Order
 
 
 class AuthService :
@@ -30,3 +30,7 @@ class AuthService :
             return user
         
         return None
+
+    @staticmethod
+    def get_user_orders(user_id):
+        return Order.query.filter_by(user_id = user_id).order_by(Order.order_date.desc()).all()

@@ -1,6 +1,7 @@
 from flask import Blueprint, session, redirect, url_for, flash, request
 from . import services
 from flask import render_template
+from flask_login import current_user , login_required
 
 cart_bp = Blueprint('cart', __name__)
 
@@ -47,6 +48,7 @@ def update_cart():
     return redirect(url_for('cart.view_cart'))
 
 @cart_bp.route('/checkout')
+@login_required
 def checkout():
     cart_items, total_price = services.get_cart_data()
     if not cart_items:
@@ -57,7 +59,7 @@ def checkout():
 @cart_bp.route('/place-order', methods=['POST'])
 def place_order():
     customer_info=request.form
-    order, error_message = services.create_order(customer_info)
+    order, error_message = services.create_order(customer_info,current_user)
     if order:
         flash('سفارش شما با موفقیت ثبت شد!', 'success')
         return render_template('order-confirmation.html', order=order)

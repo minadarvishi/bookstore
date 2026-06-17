@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template , redirect , url_for , flash , request
-from flask_login import login_user , logout_user , login_required
+from flask import Blueprint, render_template , redirect , url_for , flash , request ,abort
+from flask_login import login_user , logout_user , login_required , current_user
 from auth.services import AuthService
+from models import Order
 
 
 
@@ -33,8 +34,32 @@ def login():
         user = AuthService.authenticate_user(email , password)
         if user : 
             login_user(user)
-            return redirect(url_for('main.home'))
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('main.home'))
         
         flash('ایمیل یا رمز عبور اشتباه است.', 'danger')
     
     return render_template('auth/login.html')
+
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('شما با موفقیت خارج شدید.', 'info')
+    return redirect(url_for('main.home'))
+
+@auth_bp.route('/my-orders')
+@login_required
+def my_orders():
+    orders = AuthService.get_user_orders(current_user.id)
+    return render_template('auth/my_orders.html', orders=orders)
+
+
+@auth_bp.route('/order/<int:order_id>')
+@login_required
+def order_detail(order_id): 
+    order = Order.query.get_or_404(order_id)
+    if order.user_id != current_user.id:
+        abort(403)
+    return render_template('auth/order_detail.html', order=order)
+

@@ -46,6 +46,8 @@ class Category(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
     customer_name = db.Column(db.String(100), nullable=False)
     customer_phone = db.Column(db.String(20), nullable=False)
     customer_address = db.Column(db.Text, nullable=False)
@@ -55,6 +57,7 @@ class Order(db.Model):
 
 
     items = db.relationship('OrderItem', backref='order', lazy=True)
+    user = db.relationship('User', backref=db.backref('orders', lazy=True))
 
     def __repr__(self):
         return f"Order('{self.id}', '{self.customer_name}')"
