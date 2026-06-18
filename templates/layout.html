@@ -131,6 +131,54 @@
         justify-content: center;
     }
 }
+
+
+
+/* تنظیمات اختصاصی دراپ‌داون پروفایل */
+
+/* ۱. حذف بردر و اضافه کردن سایه قهوه‌ای خوش‌رنگ دور کل کادر دراپ‌داون */
+.header .main-header .account-dropdown .dropdown-menu {
+  background-color: #ffffff !important;
+  border: none !important; /* حذف بردر پیش‌فرض */
+  box-shadow: 0 5px 15px rgb(93, 75, 56) !important; /* سایه قهوه‌ای ملایم و شیک */
+}
+
+/* ۲. سفید کردن کامل پس‌زمینه بخش خوش‌آمدید */
+.header .main-header .account-dropdown .dropdown-menu .dropdown-header {
+  background-color: #ffffff !important; /* سفید شدن پس‌زمینه طوسی */
+}
+
+/* ۳. قهوه‌ای کردن رنگ نام کاربر (کلمه تست یا هر نام دیگر) */
+.header .main-header .account-dropdown .dropdown-menu .dropdown-header h6 span {
+  color: #5D4B38 !important; /* رنگ قهوه‌ای هماهنگ با دکمه خروج */
+}
+/* افکت هاور (Hover) برای گزینه‌های داخل دراپ‌داون */
+.header .main-header .account-dropdown .dropdown-menu .dropdown-body .dropdown-item {
+  transition: all 0.3s ease !important; /* نرم شدن حرکت افکت */
+}
+
+.header .main-header .account-dropdown .dropdown-menu .dropdown-body .dropdown-item:hover {
+  background-color: #fcfbfa !important; /* یک پس‌زمینه بسیار ملایم قهوه‌ای/کرم هنگام هاور */
+  color: #5D4B38 !important; /* تغییر رنگ متن به قهوه‌ای */
+  box-shadow: 0 4px 15px rgba(93, 75, 56, 0.15) !important; /* ایجاد سایه قهوه‌ای ملایم زیر گزینه‌ای که موس روی آن است */
+  transform: translateY(-1px); /* جابجایی بسیار خفیف به سمت بالا برای حس پویایی بیشتر */
+}
+
+/* تغییر رنگ آیکون‌ها هنگام هاور */
+.header .main-header .account-dropdown .dropdown-menu .dropdown-body .dropdown-item:hover i {
+  color: #5D4B38 !important;
+}
+
+/* اصلاح حالت هاور دکمه ثبت‌نام (Register) */
+.header .main-header .account-dropdown .dropdown-menu .dropdown-footer .btn-outline-primary:hover {
+  background-color: #5D4B38 !important; /* تغییر پس‌زمینه به قهوه‌ای هنگام هاور */
+  border-color: #5D4B38 !important;     /* تغییر رنگ بردر به قهوه‌ای */
+  color: #ffffff !important;             /* سفید شدن رنگ متن روی پس‌زمینه قهوه‌ای */
+}
+
+
+
+
   </style>
 
 </head>
@@ -223,6 +271,50 @@
               <i class="bi bi-cart3"></i>
               <span class="badge">{{items_count}}</span>
             </a>
+            
+
+            <!-- Account Dropdown -->
+            <div class="dropdown account-dropdown me-3">
+  <button class="header-action-btn" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="bi bi-person"></i>
+  </button>
+  <div class="dropdown-menu text-right bg-white shadow text-dark" style="text-align: right; background-color: #ffffff !important; min-width: 260px;">
+    
+    {% if current_user.is_authenticated %}
+      <!-- کاربر وارد شده است -->
+      <div class="dropdown-header bg-light text-dark">
+        <h6 class="mb-1">خوش آمدید، <span class="sitename text-primary fw-bold">{{ current_user.name }}</span></h6>
+        <p class="mb-0 text-muted" style="font-size: 12px;">دسترسی به حساب کاربری و مدیریت سفارشات</p>
+      </div>
+      <div class="dropdown-body">
+        <a class="dropdown-item d-flex align-items-center text-dark" href="{{ url_for('auth.profile') }}">
+          <i class="bi bi-person-circle ms-2 text-secondary"></i>
+          <span>پروفایل من</span>
+        </a>
+        <a class="dropdown-item d-flex align-items-center text-dark" href="{{ url_for('auth.my_orders') }}">
+          <i class="bi bi-bag-check ms-2 text-secondary"></i>
+          <span>سفارشات من</span>
+        </a>
+      </div>
+      <div class="dropdown-footer px-3 py-2 border-top">
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger w-100">خروج از حساب</a>
+      </div>
+
+    {% else %}
+      <!-- کاربر مهمان است -->
+      <div class="dropdown-header bg-light text-dark">
+        <h6 class="mb-1">به <span class="sitename fw-bold">فروشگاه کتاب</span> خوش آمدید</h6>
+        <p class="mb-0 text-muted" style="font-size: 12px;">برای مدیریت سفارشات خود وارد شوید</p>
+      </div>
+      <div class="dropdown-footer px-3 py-2">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-primary w-100 mb-2">ورود به حساب</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-outline-primary w-100">ثبت‌نام</a>
+      </div>
+    {% endif %}
+
+  </div>
+            </div>
+
 
             <!-- Mobile Navigation Toggle -->
             <i class="mobile-nav-toggle d-xl-none bi bi-list me-0"></i>
@@ -241,31 +333,6 @@
             <li><a href="{{ url_for('main.shop') }}">فروشگاه</a></li>
             <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
             <li><a href="{{ url_for('main.contact') }}">تماس با ما</a></li>
-            {% if current_user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link text-warning" href="{{ url_for('auth.my_orders') }}">سفارشات من</a>
-    </li>
-    <!-- بقیه لینک‌ها مثل خروج -->
-{% endif %}
-
-          </ul>
-
-          <ul class="navbar-nav ms-auto">
-            {% if current_user.is_authenticated %}
-            <li class="nav-item">
-              <span class="nav-link text-light">خوش آمدید، {{ current_user.name }}</span>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">خروج</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.login') }}">ورود</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('auth.register') }}">ثبت‌نام</a>
-            </li>
-              {% endif %}
           </ul>
           
         </nav>

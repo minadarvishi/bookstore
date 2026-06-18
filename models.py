@@ -78,6 +78,10 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.Text, nullable=True)
+    
+    addresses = db.relationship('Address', backref='user', lazy=True, cascade="all, delete-orphan")
 
     def set_password(self , password):
         self.password_hash = generate_password_hash (password)
@@ -88,3 +92,16 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}')"
 
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    title = db.Column(db.String(50), nullable=False) 
+    recipient_name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), nullable=False) 
+    address_line = db.Column(db.Text, nullable=False) 
+    
+    is_default = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return f"Address('{self.title}', User: '{self.user_id}')"

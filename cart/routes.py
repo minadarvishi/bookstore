@@ -2,6 +2,7 @@ from flask import Blueprint, session, redirect, url_for, flash, request
 from . import services
 from flask import render_template
 from flask_login import current_user , login_required
+from models import Address
 
 cart_bp = Blueprint('cart', __name__)
 
@@ -54,7 +55,8 @@ def checkout():
     if not cart_items:
         flash("سبد خرید شما خالی است و نمی‌توانید تسویه حساب کنید.", "warning")
         return redirect(url_for('cart.view_cart'))
-    return render_template('checkout.html', cart_items=cart_items, total_price=total_price)
+    default_address = Address.query.filter_by(user_id=current_user.id, is_default=True).first()
+    return render_template('checkout.html', cart_items=cart_items, total_price=total_price , default_address=default_address)
 
 @cart_bp.route('/place-order', methods=['POST'])
 def place_order():

@@ -1208,13 +1208,14 @@ h6 {
 }
 
 .header .main-header .account-dropdown .dropdown-menu {
-  background-color: var(--surface-color);
+  background-color: #ffffff;
+  color: #5d4b38;
   min-width: 280px;
-  padding: 0;
+  padding: 5px;
   border-radius: 6px;
   margin-top: 0.75rem;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
-  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  box-shadow: 0 5px 15px rgb(93, 75, 56);
+ 
 }
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-header {
@@ -1261,24 +1262,23 @@ h6 {
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-footer {
   padding: 1.25rem;
-  background-color: color-mix(in srgb, var(--default-color), transparent 97%);
   border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
 }
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-footer .btn {
   font-size: 14px;
   padding: 0.5rem 1rem;
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: var(--contrast-color);
+  background-color: #5d4b38;
+  border-color: #5d4b38;
+  color: #ffffff;
   transition: 0.3s;
   border-radius: 50px;
 }
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-footer .btn-outline-primary {
-  border-color: var(--accent-color);
-  background-color: transparent;
-  color: var(--accent-color);
+  border-color: #5d4b38;
+  background-color: #5d4b38;
+  color: #ffffff;
 }
 
 .header .main-header .account-dropdown .dropdown-menu .dropdown-footer .btn-outline-primary:hover {

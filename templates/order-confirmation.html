@@ -5,22 +5,61 @@
 {% block head %}
 {{ super() }}
 <style>
+  /* استایل‌های اختصاصی فاکتور جهت تراز صحیح در تم NiceShop */
+  .invoice-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    direction: rtl;
+    text-align: right;
+  }
+  .invoice-header-brand h2 {
+    color: #5D4B38;
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
+  .table-invoice th {
+    background-color: #f8f9fa !important;
+    color: #5D4B38 !important;
+    font-weight: bold;
+  }
+
+  /* تنظیمات پیشرفته هوشمند برای زمان پرینت کاغذ */
   @media print {
+    body * {
+      visibility: hidden;
+    }
+    .invoice-container, .invoice-container * {
+      visibility: visible;
+    }
+    .invoice-container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
     .no-print {
       display: none !important;
+    }
+    @page {
+      size: auto;
+      margin: 15mm 10mm 15mm 10mm;
     }
   }
 </style>
 {% endblock %}
 
-
 {% block content %}
   <main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title light-background">
+    <!-- Page Title (در زمان پرینت مخفی می‌شود) -->
+    <div class="page-title light-background no-print">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">تایید سفارش</h1>
+        <h1 class="mb-2 mb-lg-0" style="color: #5D4B38; font-weight: bold;">تایید سفارش</h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="{{ url_for('main.home') }}" style="color: #5d4b38">خانه</a></li>
@@ -28,110 +67,191 @@
           </ol>
         </nav>
       </div>
-    </div><!-- End Page Title -->
+    </div>
 
     <!-- Order Confirmation Section -->
-    <section id="order-confirmation" class="order-confirmation section">
-
+    <section id="order-confirmation" class="order-confirmation section" style="padding: 40px 0;">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+        
+        <!-- پیام تشکر بالا (در زمان پرینت مخفی می‌شود) -->
+        <div class="thank-you-message text-center mb-4 no-print">
+          <h2 class="fw-bold" style="color: #2e6930;"><i class="bi bi-check-circle-fill ms-2"></i>ممنون از سفارشتون!</h2>
+          <p class="text-muted">ما سفارش شما را دریافت کرده‌ایم و بلافاصله پردازش آن را آغاز خواهیم کرد.</p>
+        </div>
 
-        <div class="order-confirmation-3">
-          <div class="row g-0">
-            <!-- Left sidebar with order summary -->
-            <!-- Main content area -->
-            <div class="col-lg-12 main-content" data-aos="fade-in">
-              <!-- Thank you message -->
-              <div class="thank-you-message">
-                <h1>ممنون از سفارشتون!</h1>
-                <p>ما سفارش شما را دریافت کرده‌ایم و بلافاصله پردازش آن را آغاز خواهیم کرد.</p>
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            
+            <!-- شروع کانتینر اصلی فاکتور تجاری -->
+            <div class="invoice-container">
+              
+              <!-- ۱. سربرگ فاکتور (تراز کاملاً راست‌چین و چپ‌چین بر اساس عکس) -->
+              <div class="row align-items-center border-bottom pb-4 mb-4">
+                <!-- نام برند دقیقا در سمت راست فاکتور -->
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0" style="text-align: right !important;">
+                  <div class="invoice-header-brand">
+                    <h2><i class="bi bi-book-half ms-2"></i>فروشگاه کتاب</h2>
+                  </div>
+                </div>
+                <!-- اطلاعات صدور در سمت چپ فاکتور -->
+                <div class="col-md-6 text-center text-md-end" style="text-align: left !important; direction: rtl;">
+                  <h3 class="fw-bold mb-2" style="color: #5D4B38; letter-spacing: 1px;">فاکتور فروش کالا</h3>
+                  <p class="mb-1"><strong>شماره فاکتور:</strong> #ORD-{{ order.id }}</p>
+                  <p class="mb-1"><strong>تاریخ صدور:</strong> {{ order.order_date.strftime('%Y-%m-%d') if order.order_date.strftime else order.order_date }}</p>
+                  <p class="mb-0"><strong>وضعیت پرداخت:</strong> <span class="text-success fw-bold">پرداخت آنلاین (موفق)</span></p>
+                </div>
               </div>
 
-              <!-- Shipping details -->
-              <div class="details-card" data-aos="fade-up">
-                <div class="card-header" data-toggle="collapse">
-                  <h3>
-                    <i class="bi bi-geo-alt"></i>
-                    جزئیات سفارش
-                  </h3>
-                  <i class="bi bi-chevron-down toggle-icon"></i>
-                </div>
-                <div class="card-body">
-                  <div class="row g-4">
-                    <div class="col-md-6">
-                      <div class="detail-group">
-                        <label>اطلاعات مشتری</label>
-                        <address>
-                           نام و نام خانوادگی : {{ order.customer_name }}<br>
-                           شماره تماس : {{ order.customer_phone }} <br>
-                           آدرس : {{ order.customer_address }}<br>
-                        </address>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="detail-group">
-                        <label>سفارش</label>
-                        <address>
-                          #ORD-{{ order.id }}<br>
-                           تاریخ : {{ order.order_date }}<br>
-                          <p style="color: #2e6930">تایید شد.</p><br>
-                        </address>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Order items -->
-              <div class="details-card" data-aos="fade-up">
-            <div class=" card-header" data-toggle="collapse">
-                <h3>
-                  <i class="bi bi-bag-check"></i>اقلام سفارش
-                </h3>
-                <i class="bi bi-chevron-down toggle-icon"></i>
-              </div>
-              <div class="card-body">
-                {% for item in order.items %}
-                <div class="item">
-                  <div class="item-image">
-                    <img src="{{ url_for('admin.static', filename='uploads/' + item.product.image_file) }}" alt="{{ item.product.name }}" loading="lazy">
-                  </div>
-                  <div class="item-details">
-                    <h4>{{ item.product.name }}</h4>
-                    <div class="item-price">
-                      <span class="quantity">{{ item.quantity }} ×</span>
-                      <span class="price">{{ "{:,.0f}".format(item.product.price) }}</span>
-                    </div>
-                  </div>
-                </div>
-                 {% endfor %}
-              </div>
-            </div>
-            <!-- Action buttons -->
-            <div class="action-area" data-aos="fade-up">
-              <div class="row g-3">
+              <!-- ۲. اطلاعات مشخصات فروشنده، خریدار و وضعیت ارسال -->
+              <div class="row g-3 mb-4">
+                <!-- مشخصات فروشنده و وضعیت مرسوله (سمت راست) -->
                 <div class="col-md-6">
-                  <a href="{{url_for('main.shop')}}" class="btn btn-back">
-                    <i class="bi bi-arrow-left"></i>
-                    بازگشت به فروشگاه
-                  </a>
+                  <div class="p-3 rounded" style="background-color: #faf8f5; border-right: 4px solid #5D4B38; height: 100%;">
+                    <h6 class="fw-bold mb-2.5" style="color: #5D4B38;"><i class="bi bi-building ms-1"></i> مشخصات فروشنده:</h6>
+                    <p class="mb-2 fs-7"><strong>مرکز توزیع:</strong> انبار مرکزی فروشگاه کتاب</p>
+                    <p class="mb-3 fs-7"><strong>تلفن پشتیبانی:</strong> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+                    
+                    <!-- وضعیت ارسال مرسوله -->
+                    <div class="pt-2 border-top">
+                      <span class="fs-7"><strong>وضعیت ارسال مرسوله:</strong></span>
+                      {% if order.status == 'Pending' or order.status == 'در انتظار' or not order.status %}
+                        <span class="badge bg-warning text-dark ms-1 px-2.5 py-1">در حال بررسی و بسته‌بندی</span>
+                      {% else %}
+                        <span class="badge bg-success text-white ms-1 px-2.5 py-1">ارسال شده (تحویل پست)</span>
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
+                
+                <!-- مشخصات خریدار (سمت چپ) -->
                 <div class="col-md-6">
-                  <a onclick="window.print();" class="btn btn-account">
-                    <span>چاپ فاکتور</span>
-                    <i class="bi bi-arrow-right"></i>
-                  </a>
+                  <div class="p-3 rounded" style="background-color: #f8f9fa; border-right: 4px solid #6c757d; height: 100%;">
+                    <h6 class="fw-bold mb-2.5 text-secondary"><i class="bi bi-person-badge ms-1"></i> مشخصات خریدار:</h6>
+                    <p class="mb-1.5 fs-7"><strong>نام گیرنده:</strong> {{ order.customer_name }}</p>
+                    <p class="mb-1.5 fs-7"><strong>شماره تماس:</strong> <span style="direction: ltr; display: inline-block;">{{ order.customer_phone }}</span></p>
+                    <p class="mb-0 fs-7"><strong>نشانی ارسال:</strong> {{ order.customer_address }}</p>
+                  </div>
                 </div>
               </div>
+
+              <!-- ۳. جدول اقلام خریداری شده -->
+              <div class="table-responsive mb-4" style="border-radius: 6px; overflow: hidden; border: 1px solid #eeeeee;">
+                <table class="table table-bordered table-invoice align-middle text-center mb-0">
+                  <thead>
+                    <tr>
+                      <th style="width: 8%;">ردیف</th>
+                      <th class="text-end" style="width: 47%; padding-right: 15px;">شرح کالا / خدمات</th>
+                      <th style="width: 10%;">تعداد</th>
+                      <th style="width: 15%;">قیمت واحد</th>
+                      <th style="width: 20%;">جمع کل (تومان)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in order.items %}
+                    <tr>
+                      <td>{{ loop.index }}</td>
+                      <td class="text-end fw-bold" style="padding-right: 15px;">{{ item.product.name }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td class="text-muted">{{ "{:,.0f}".format(item.product.price) }}</td>
+                      <td class="fw-bold" style="color: #5D4B38;">{{ "{:,.0f}".format(item.quantity * item.product.price) }}</td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <!-- ردیف هزینه ارسال ثابت -->
+                    <tr>
+                      <td>{{ order.items|length + 1 }}</td>
+                      <td class="text-end text-muted" style="padding-right: 15px;">هزینه بسته‌بندی و ارسال (پست پیشتاز)</td>
+                      <td>۱</td>
+                      <td class="text-muted">۵۰,۰۰۰</td>
+                      <td class="text-muted">۵۰,۰۰۰</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-light">
+                      <th colspan="4" class="text-end py-3" style="padding-right: 15px; font-size: 16px; color: #5D4B38;">مبلغ قابل پرداخت نهایی:</th>
+                      <th class="py-3 text-center fw-bold" style="color: #5D4B38; font-size: 18px;">
+                        {{ "{:,.0f}".format(order.total_price + 50000) }} تومان
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- ۴. پاصفحه فاکتور (مبلغ به حروف و قوانین) -->
+              <div class="row align-items-center mt-4">
+                <div class="col-12">
+                  <div class="p-2.5 rounded bg-light border text-secondary mb-3" style="font-size: 14px;">
+                    <i class="bi bi-chat-left-text ms-1"></i> 
+                    <strong>مبلغ به حروف:</strong> <span id="amount-in-words"></span>
+                  </div>
+                  <div class="text-muted" style="font-size: 12px;">
+                    * در صورت بروز هرگونه مغایرت در اقلام دریافتی، حداکثر تا ۷ روز با پشتیبانی فروشگاه تماس بگیرید.
+                  </div>
+                </div>
+              </div>
+
+              <!-- دکمه‌های عملیاتی پایین صفحه (در زمان پرینت کاملاً مخفی می‌شوند) -->
+              <div class="text-center no-print mt-5 pt-3 border-top d-flex justify-content-center gap-2">
+                <button onclick="window.print();" class="btn btn-lg px-4 py-2" style="background-color: #5D4B38; color: white; font-weight: bold; border-radius: 4px; border: none;">
+                  <i class="bi bi-printer ms-1"></i> چاپ فاکتور
+                </button>
+                <a href="{{ url_for('main.shop') }}" class="btn btn-lg btn-light border px-4 py-2 fw-bold">
+                  بازگشت به فروشگاه
+                </a>
+              </div>
+
             </div>
+            <!-- پایان کانتینر فاکتور -->
+
           </div>
         </div>
       </div>
-
-      </div>
-
-    </section><!-- /Order Confirmation Section -->
+    </section>
 
   </main>
 
+  <!-- جاوااسکریپت هوشمند مبدل رقم فاکتور به حروف فارسی -->
+  <script>
+    function numToPersianWords(num) {
+      if (num === 0) return 'صفر';
+      const g = ["", "هزار", "میلیون", "میلیارد"];
+      const y = ["", "یک", "دو", "سه", "چهار", "پنج", "شش", "هفت", "هشت", "نه"];
+      const د = ["ده", "یازده", "دوازده", "سیزده", "چهارده", "پانزده", "شانزده", "هفده", "هجده", "نوزده"];
+      const ب = ["", "", "بیست", "سی", "چهل", "پنجاه", "شصت", "هفتاد", "هشتاد", "نود"];
+      const ص = ["", "صد", "دویست", "سیصد", "چهارصد", "پانصد", "ششصد", "هفتصد", "هشتصد", "نهصد"];
+
+      function سه_تایی(n) {
+        let text = "";
+        let c = Math.floor(n / 100); n %= 100;
+        let d = Math.floor(n / 10);
+        let y_digit = n % 10;
+
+        if (c > 0) text += ص[c] + " و ";
+        if (d === 1) text += د[y_digit] + " و ";
+        else {
+          if (d > 1) text += ب[d] + " و ";
+          if (y_digit > 0) text += y[y_digit] + " و ";
+        }
+        return text.slice(0, -3);
+      }
+
+      let words = [];
+      let i = 0;
+      while (num > 0) {
+        let chunk = num % 1000;
+        if (chunk > 0) {
+          let chunkText = سه_تایی(chunk);
+          words.push(chunkText + (g[i] ? " " + g[i] : ""));
+        }
+        num = Math.floor(num / 1000);
+        i++;
+      }
+      return words.reverse().join(" و ").trim();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const totalPrice = parseInt("{{ order.total_price + 50000 }}");
+      document.getElementById("amount-in-words").innerText = numToPersianWords(totalPrice) + " تومان";
+    });
+  </script>
 {% endblock %}
-
-

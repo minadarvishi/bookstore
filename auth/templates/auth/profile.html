@@ -1,0 +1,538 @@
+{% extends "layout.html" %}
+
+{% block title %}حساب کاربری - مدیریت سفارشات و نشانی‌ها{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+  /* استایل‌های اختصاصی داشبورد یکپارچه */
+  .account-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    direction: rtl;
+    text-align: right;
+  }
+  .account-card-header {
+    border-bottom: 2px solid #faf8f5;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+  }
+  .account-card-header h4 {
+    color: #5D4B38;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .form-label {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .form-control:focus {
+    border-color: #5D4B38;
+    box-shadow: 0 0 0 0.2rem rgba(93, 75, 56, 0.15);
+  }
+
+  /* دکمه‌های عمومی */
+  .btn-nice, 
+  .btn-table-view, 
+  button[type="submit"] {
+    background-color: #5D4B38 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    border: 1px solid #5D4B38 !important;
+    border-radius: 4px !important;
+    padding: 10px 20px !important;
+    transition: all 0.3s !important;
+    text-decoration: none !important;
+    display: inline-block;
+  }
+  .btn-table-view {
+    padding: 5px 15px !important;
+    font-size: 13px !important;
+  }
+  .btn-nice:hover, 
+  .btn-table-view:hover, 
+  button[type="submit"]:hover {
+    background-color: #47392a !important;
+    border-color: #47392a !important;
+    color: #ffffff !important;
+  }
+
+  /* ===== دکمه‌های منوی کناری - قهوه‌ای با متن سفید ===== */
+  .account-nav .nav-link-custom,
+  .account-nav a.nav-link-custom,
+  #menu-orders-tab,
+  #menu-profile-tab {
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 15px !important;
+    border-radius: 4px !important;
+    background-color: #5D4B38 !important;
+    color: #ffffff !important;
+    margin-bottom: 5px !important;
+    text-decoration: none !important;
+    transition: all 0.3s !important;
+  }
+
+  .account-nav .nav-link-custom *,
+  #menu-orders-tab *,
+  #menu-profile-tab * {
+    color: #ffffff !important;
+    background-color: transparent !important;
+  }
+
+  .account-nav .nav-link-custom:hover,
+  .account-nav .nav-link-custom.active-menu,
+  #menu-orders-tab:hover,
+  #menu-profile-tab:hover,
+  #menu-orders-tab.active-menu,
+  #menu-profile-tab.active-menu {
+    background-color: #47392a !important;
+    color: #ffffff !important;
+  }
+
+  .account-nav .nav-link-custom:hover *,
+  .account-nav .nav-link-custom.active-menu *,
+  #menu-orders-tab:hover *,
+  #menu-profile-tab:hover *,
+  #menu-orders-tab.active-menu *,
+  #menu-profile-tab.active-menu * {
+    color: #ffffff !important;
+  }
+  /* ===================================================== */
+
+  .address-box {
+    border: 1px solid #eeeeee;
+    background: #ffffff;
+    transition: all 0.3s ease;
+  }
+  .address-box.default-active {
+    border-right: 4px solid #5D4B38 !important;
+    background-color: #faf8f5;
+  }
+
+  .invoice-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    direction: rtl;
+    text-align: right;
+  }
+  .table-invoice th {
+    background-color: #f8f9fa !important;
+    color: #5D4B38 !important;
+    font-weight: bold;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #invoice-tab-content, #invoice-tab-content * {
+      visibility: visible;
+    }
+    #invoice-tab-content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .invoice-container .row .col-md-6 {
+      width: 50% !important;
+      float: right !important;
+      display: inline-block !important;
+    }
+    .no-print {
+      display: none !important;
+    }
+    @page {
+      size: auto;
+      margin: 15mm 10mm 15mm 10mm;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <main class="main">
+
+    <div class="page-title light-background no-print">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0" style="color: #5D4B38; font-weight: bold; text-align: right; direction: rtl;">داشبورد حساب کاربری</h1>
+      </div>
+    </div>
+
+    <section id="account-dashboard" class="account section" style="padding: 60px 0;">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4" style="direction: rtl;">
+
+          <div class="col-lg-3 no-print" data-aos="fade-left" data-aos-delay="200">
+            <div class="account-nav" style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); text-align: right;">
+              <h5 class="fw-bold mb-3 border-bottom pb-2" style="color: #5D4B38;">مدیریت حساب</h5>
+              <ul class="list-unstyled mb-0 d-flex flex-column gap-1 p-0">
+                <li>
+                  <a onclick="switchDashboardTab('orders-tab')" id="menu-orders-tab" class="nav-link-custom active-menu" style="background-color:#5D4B38 !important; color:#ffffff !important; display:flex; align-items:center; padding:10px 15px; border-radius:4px; margin-bottom:5px; text-decoration:none; font-weight:600; cursor:pointer;">
+                    <i class="bi bi-bag-check ms-2" style="color:#ffffff !important;"></i>
+                    <span style="color:#ffffff !important;">سفارشات من</span>
+                  </a>
+                </li>
+                <li>
+                  <a onclick="switchDashboardTab('profile-tab')" id="menu-profile-tab" class="nav-link-custom" style="background-color:#5D4B38 !important; color:#ffffff !important; display:flex; align-items:center; padding:10px 15px; border-radius:4px; margin-bottom:5px; text-decoration:none; font-weight:600; cursor:pointer;">
+                    <i class="bi bi-geo-alt ms-2" style="color:#ffffff !important;"></i>
+                    <span style="color:#ffffff !important;">نشانی‌ها و پروفایل</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="{{ url_for('auth.logout') }}" class="d-flex align-items-center py-2 px-3 rounded text-decoration-none text-danger transition" style="font-weight: 500; justify-content: flex-start;">
+                    <i class="bi bi-box-arrow-right ms-2"></i>
+                    <span>خروج از حساب</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-9" data-aos="fade-up" data-aos-delay="300">
+            
+            <div id="orders-tab-content" class="dashboard-tab-content">
+              <div class="account-card">
+                <div class="account-card-header">
+                  <h4><i class="bi bi-clock-history ms-2"></i>تاریخچه سفارشات</h4>
+                </div>
+                
+                {% if orders %}
+                  <div class="table-responsive" style="border-radius: 6px; overflow: hidden; border: 1px solid #eeeeee;">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                      <thead style="background-color: #fcfbfa; color: #5D4B38; border-bottom: 2px solid #5D4B38;">
+                        <tr>
+                          <th class="py-3">ردیف</th>
+                          <th class="py-3">تاریخ ثبت</th>
+                          <th class="py-3">مبلغ کل (به همراه پست)</th>
+                          <th class="py-3">وضعیت مرسوله</th>
+                          <th class="py-3">عملیات</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for o in orders %}
+                        <tr>
+                          <td class="py-3 fw-bold">{{ loop.index }}</td>
+                          <td class="py-3 text-muted">{{ o.order_date.strftime('%Y-%m-%d') if o.order_date.strftime else o.order_date }}</td>
+                          <td class="py-3 fw-bold" style="color: #5D4B38;">{{ "{:,.0f}".format(o.total_price + 50000) }} تومان</td>
+                          <td class="py-3">
+                            {% if o.status == 'Pending' or o.status == 'در انتظار' %}
+                              <span class="badge rounded-pill bg-warning text-dark px-3 py-2" style="font-size: 13px;">در انتظار بررسی</span>
+                            {% else %}
+                              <span class="badge rounded-pill bg-success text-white px-3 py-2" style="font-size: 13px;">تکمیل شده</span>
+                            {% endif %}
+                          </td>
+                          <td class="py-3">
+                            <a href="?open_order={{ o.id }}" class="btn btn-table-view btn-sm">مشاهده جزئیات</a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <div class="text-center py-5">
+                    <i class="bi bi-bag-x mb-3 d-block text-muted" style="font-size: 3rem;"></i>
+                    <h5 class="text-muted fw-bold">شما هنوز هیچ سفارشی ثبت نکرده‌اید.</h5>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div id="profile-tab-content" class="dashboard-tab-content" style="display: none;">
+              <div class="row g-4">
+                <div class="col-md-5">
+                  <div class="account-card mb-4">
+                    <div class="account-card-header">
+                      <h4><i class="bi bi-person-circle ms-2"></i>اطلاعات کاربری</h4>
+                    </div>
+                    <form method="POST" action="{{ url_for('auth.profile') }}">
+                      <div class="mb-3">
+                        <label class="form-label">ایمیل (غیرقابل تغییر)</label>
+                        <input type="email" class="form-control bg-light" value="{{ current_user.email }}" disabled style="text-align: left; direction: ltr;">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">نام و نام‌خانوادگی</label>
+                        <input type="text" name="name" class="form-control" value="{{ current_user.name }}" required>
+                      </div>
+                      <button type="submit" class="btn btn-nice btn-sm w-100 py-2">بروزرسانی اطلاعات</button>
+                    </form>
+                  </div>
+
+                  <div class="account-card">
+                    <div class="account-card-header">
+                      <h4><i class="bi bi-plus-circle ms-2"></i>افزودن آدرس جدید</h4>
+                    </div>
+                    <form method="POST" action="{{ url_for('auth.add_address') }}">
+                      <div class="mb-3">
+                        <label class="form-label">عنوان آدرس (مثال: خانه، محل کار)</label>
+                        <input type="text" name="title" class="form-control" placeholder="مثلاً: خانه" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">نام و نام‌خانوادگی تحویل‌گیرنده</label>
+                        <input type="text" name="recipient_name" class="form-control" placeholder="نام گیرنده مرسوله" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">شماره تماس تحویل‌گیرنده</label>
+                        <input type="text" name="phone" class="form-control text-start" placeholder="09XXXXXXXXX" style="direction: ltr;" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">نشانی دقیق پستی</label>
+                        <textarea name="address_line" class="form-control" rows="3" placeholder="استان، شهر، خیابان، کوچه، پلاک..." required></textarea>
+                      </div>
+                      <div class="mb-3 form-check d-flex align-items-center p-0">
+                        <input type="checkbox" name="is_default" class="form-check-input me-0 ms-2" id="is_default" style="float: right;">
+                        <label class="form-check-label mr-4" for="is_default" style="font-size: 13px; color: #6c757d; font-weight: 600;">انتخاب به عنوان آدرس پیش‌فرض</label>
+                      </div>
+                      <button type="submit" class="btn btn-nice w-100 py-2">ثبت و ذخیره آدرس</button>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="col-md-7">
+                  <div class="account-card h-100">
+                    <div class="account-card-header d-flex justify-content-between align-items-center">
+                      <h4><i class="bi bi-geo-alt-fill ms-2"></i>آدرس‌های من</h4>
+                      <span class="badge rounded-pill px-3 py-1.5" style="background-color: #faf8f5; color: #5D4B38; font-weight: bold; border: 1px solid #e2dbd5;">
+                        {{ addresses|length if addresses else 0 }} آدرس ثبت شده
+                      </span>
+                    </div>
+                    {% if addresses %}
+                      <div class="d-flex flex-column gap-3">
+                        {% for address in addresses %}
+                          <div class="p-3 rounded address-box {% if address.is_default %}default-active{% endif %}">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                              <h5 class="fw-bold mb-0" style="color: #5D4B38; font-size: 16px;">
+                                {{ address.title }}
+                                {% if address.is_default %}
+                                  <span class="badge ms-2 bg-success text-white" style="font-size: 11px; font-weight: 500; padding: 4px 8px;">پیش‌فرض</span>
+                                {% endif %}
+                              </h5>
+                              <a href="{{ url_for('auth.delete_address', address_id=address.id) }}" class="text-danger text-decoration-none transition" onclick="return confirm('آیا از حذف این آدرس مطمئن هستید؟')" style="font-size: 14px; font-weight: 500;">
+                                <i class="bi bi-trash3 ms-1"></i>حذف
+                              </a>
+                            </div>
+                            <hr class="my-2" style="border-top: 1px dashed #dddddd;">
+                            <div class="text-muted fs-7 lh-lg" style="font-size: 13.5px;">
+                              <p class="mb-1"><strong><i class="bi bi-person ms-1 text-secondary"></i> تحویل‌گیرنده:</strong> {{ address.recipient_name }}</p>
+                              <p class="mb-1"><strong><i class="bi bi-telephone ms-1 text-secondary"></i> تلفن تماس:</strong> <span style="direction: ltr; display: inline-block;">{{ address.phone }}</span></p>
+                              <p class="mb-2"><strong><i class="bi bi-map ms-1 text-secondary"></i> نشانی:</strong> {{ address.address_line }}</p>
+                            </div>
+                            {% if not address.is_default %}
+                              <div class="pt-2 border-top mt-2" style="border-top: 1px solid #f5f5f5 !important;">
+                                <a href="{{ url_for('auth.set_default_address', address_id=address.id) }}" class="text-decoration-none fw-bold transition" style="color: #5D4B38; font-size: 13px;">
+                                  <i class="bi bi-check2-circle ms-1"></i> انتخاب به عنوان آدرس پیش‌فرض
+                                </a>
+                              </div>
+                            {% endif %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <div class="text-center py-5">
+                        <div class="mb-3 text-muted" style="font-size: 45px;"><i class="bi bi-geo"></i></div>
+                        <h6 class="text-muted fw-bold">شما هنوز هیچ نشانی ثبت نکرده‌اید!</h6>
+                        <small class="text-secondary d-block mt-1">جهت ثبت سفارش در مراحل بعدی، لطفاً آدرس خود را اضافه کنید.</small>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if order %}
+            <div id="invoice-tab-content" class="dashboard-tab-content" style="display: none;">
+              <div class="invoice-container">
+                
+                <div class="row align-items-center border-bottom pb-4 mb-4">
+                  <div class="col-md-6 text-center text-md-start mb-3 mb-md-0" style="text-align: right !important;">
+                    <div class="invoice-header-brand">
+                      <h2><i class="bi bi-book-half ms-2"></i>فروشگاه کتاب</h2>
+                    </div>
+                  </div>
+                  <div class="col-md-6 text-center text-md-end" style="text-align: left !important; direction: rtl;">
+                    <h3 class="fw-bold mb-2" style="color: #5D4B38; letter-spacing: 1px;">فاکتور فروش کالا</h3>
+                    <p class="mb-1"><strong>تاریخ صدور فاکتور:</strong> {{ order.order_date.strftime('%Y-%m-%d') if order.order_date.strftime else order.order_date }}</p>
+                    <p class="mb-0"><strong>وضعیت پرداخت:</strong> <span class="text-success fw-bold">پرداخت آنلاین (موفق)</span></p>
+                  </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <div class="p-3 rounded" style="background-color: #faf8f5; border-right: 4px solid #5D4B38; height: 100%;">
+                      <h6 class="fw-bold mb-2.5" style="color: #5D4B38;"><i class="bi bi-building ms-1"></i> مشخصات فروشنده:</h6>
+                      <p class="mb-2 fs-7"><strong>مرکز توزیع:</strong> انبار مرکزی فروشگاه کتاب</p>
+                      <p class="mb-3 fs-7"><strong>تلفن پشتیبانی:</strong> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+                      <div class="pt-2 border-top">
+                        <span class="fs-7"><strong>وضعیت ارسال مرسوله:</strong></span>
+                        {% if order.status == 'Pending' or order.status == 'در انتظار' %}
+                          <span class="badge bg-warning text-dark ms-1 px-2.5 py-1">در حال بررسی و بسته‌بندی</span>
+                        {% else %}
+                          <span class="badge bg-success text-white ms-1 px-2.5 py-1">ارسال شده (تحویل پست)</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="p-3 rounded" style="background-color: #f8f9fa; border-right: 4px solid #6c757d; height: 100%;">
+                      <h6 class="fw-bold mb-2.5 text-secondary"><i class="bi bi-person-badge ms-1"></i> مشخصات خریدار:</h6>
+                      <p class="mb-1.5 fs-7"><strong>نام گیرنده:</strong> {{ order.customer_name }}</p>
+                      <p class="mb-1.5 fs-7"><strong>شماره تماس:</strong> <span style="direction: ltr; display: inline-block;">{{ order.customer_phone }}</span></p>
+                      <p class="mb-0 fs-7"><strong>نشانی ارسال:</strong> {{ order.customer_address }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-responsive mb-4" style="border-radius: 6px; overflow: hidden; border: 1px solid #eeeeee;">
+                  <table class="table table-bordered table-invoice align-middle text-center mb-0">
+                    <thead>
+                      <tr>
+                        <th style="width: 8%;">ردیف</th>
+                        <th class="text-end" style="width: 47%; padding-right: 15px;">شرح کالا / خدمات</th>
+                        <th style="width: 10%;">تعداد</th>
+                        <th style="width: 15%;">قیمت واحد</th>
+                        <th style="width: 20%;">جمع کل (تومان)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in order.items %}
+                      <tr>
+                        <td>{{ loop.index }}</td>
+                        <td class="text-end fw-bold" style="padding-right: 15px;">{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td class="text-muted">{{ "{:,.0f}".format(item.product.price) }}</td>
+                        <td class="fw-bold" style="color: #5D4B38;">{{ "{:,.0f}".format(item.quantity * item.product.price) }}</td>
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        <td>{{ order.items|length + 1 }}</td>
+                        <td class="text-end text-muted" style="padding-right: 15px;">هزینه بسته‌بندی و ارسال (پست پیشتاز)</td>
+                        <td>۱</td>
+                        <td class="text-muted">۵۰,۰۰۰</td>
+                        <td class="text-muted">۵۰,۰۰۰</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr class="table-light">
+                        <th colspan="4" class="text-end py-3" style="padding-right: 15px; font-size: 16px; color: #5D4B38;">مبلغ قابل پرداخت نهایی:</th>
+                        <th class="py-3 text-center fw-bold" style="color: #5D4B38; font-size: 18px;">
+                          {{ "{:,.0f}".format(order.total_price + 50000) }} تومان
+                        </th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                <div class="row align-items-center mt-4">
+                  <div class="col-12">
+                    <div class="p-2.5 rounded bg-light border text-secondary mb-3" style="font-size: 14px;">
+                      <i class="bi bi-chat-left-text ms-1"></i> 
+                      <strong>مبلغ به حروف:</strong> <span id="amount-in-words"></span>
+                    </div>
+                    <div class="text-muted" style="font-size: 12px;">
+                      * در صورت بروز هرگونه مغایرت در اقلام دریافتی، حداکثر تا ۷ روز با پشتیبانی فروشگاه تماس بگیرید.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-center no-print mt-5 pt-3 border-top d-flex justify-content-center gap-2">
+                  <button onclick="window.print();" class="btn btn-nice px-4 py-2">
+                    <i class="bi bi-printer ms-1"></i> چاپ فاکتور
+                  </button>
+                  <button onclick="switchDashboardTab('orders-tab')" class="btn btn-light border px-4 py-2 fw-bold" style="border-radius: 4px;">
+                    بازگشت به لیست سفارشات
+                  </button>
+                </div>
+
+              </div>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function switchDashboardTab(tabId) {
+      document.querySelectorAll('.dashboard-tab-content').forEach(function(el) {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('.account-nav .nav-link-custom').forEach(function(el) {
+        el.classList.remove('active-menu');
+      });
+
+      const targetContent = document.getElementById(tabId + '-content');
+      const targetMenu = document.getElementById('menu-' + tabId);
+      
+      if (targetContent) targetContent.style.display = 'block';
+      if (targetMenu) targetMenu.classList.add('active-menu');
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      if (urlParams.has('active_tab')) {
+        switchDashboardTab(urlParams.get('active_tab'));
+      }
+      else if (urlParams.has('open_order') || window.location.pathname.includes('confirmation')) {
+        switchDashboardTab('invoice-tab');
+      }
+
+      {% if order %}
+        const totalPrice = parseInt("{{ order.total_price + 50000 }}");
+        if(document.getElementById("amount-in-words")) {
+          document.getElementById("amount-in-words").innerText = numToPersianWords(totalPrice) + " تومان";
+        }
+      {% endif %}
+    });
+
+    function numToPersianWords(num) {
+      if (num === 0) return 'صفر';
+      const g = ["", "هزار", "میلیون", "میلیارد"];
+      const y = ["", "یک", "دو", "سه", "چهار", "پنج", "شش", "هفت", "هشت", "نه"];
+      const د = ["ده", "یازده", "دوازده", "سیزده", "چهارده", "پانزده", "شانزده", "هفده", "هجده", "نوزده"];
+      const ب = ["", "", "بیست", "سی", "چهل", "پنجاه", "شصت", "هفتاد", "هشتاد", "نود"];
+      const ص = ["", "صد", "دویست", "سیصد", "چهارصد", "پانصد", "ششصد", "هفتصد", "هشتصد", "نهصد"];
+
+      function سه_تایی(n) {
+        let text = "";
+        let c = Math.floor(n / 100); n %= 100;
+        let d = Math.floor(n / 10);
+        let y_digit = n % 10;
+        if (c > 0) text += ص[c] + " و ";
+        if (d === 1) text += د[y_digit] + " و ";
+        else {
+          if (d > 1) text += ب[d] + " و ";
+          if (y_digit > 0) text += y[y_digit] + " و ";
+        }
+        return text.slice(0, -3);
+      }
+
+      let words = []; let i = 0;
+      while (num > 0) {
+        let chunk = num % 1000;
+        if (chunk > 0) {
+          let chunkText = سه_تایی(chunk);
+          words.push(chunkText + (g[i] ? " " + g[i] : ""));
+        }
+        num = Math.floor(num / 1000); i++;
+      }
+      return words.reverse().join(" و ").trim();
+    }
+  </script>
+{% endblock %}

@@ -1,30 +1,81 @@
 {% extends "layout.html" %}
-
+{% block title %}ورود به حساب کاربری{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <h3 class="text-center">ورود به حساب کاربری</h3>
-            <hr>
-            <form method="POST">
-                <div class="mb-3">
-                    <label>ایمیل</label>
-                    <input type="email" name="email" class="form-control" required>
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">ورود</h1>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Login Section -->
+    <section id="login" class="login section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left">
+            <img src="{{ url_for('static', filename='assets/img/login.png') }}" class="img-fluid" alt="ورود">
+          </div>
+          <div class="col-lg-5 col-md-8" style="margin-top: 40px; margin-bottom: 40px;">
+            <div class="auth-container" data-aos="fade-in" data-aos-delay="200">
+
+              <!-- Login Form -->
+              <div class="auth-form login-form active">
+                <div class="form-header">
+                  <h3 style="color:#5d4b38;">ورود به حساب کاربری</h3>
+                  <p class="text-muted">لطفاً اطلاعات خود را وارد کنید.</p>
                 </div>
-                <div class="mb-3">
-                    <label>رمز عبور</label>
-                    <input type="password" name="password" class="form-control" required>
+
+                <form class="auth-form-content" method="POST">
+                  <!-- فیلد ایمیل -->
+                  <div class="input-group mb-3">
+                    <span class="input-icon">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" placeholder="ایمیل" required autocomplete="email" name="email">
+                  </div>
+
+                  <!-- فیلد رمز عبور -->
+                  <div class="input-group mb-3">
+                    <span class="input-icon">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" placeholder="رمز عبور" required autocomplete="current-password" name="password">
+                  </div>
+
+                  <!-- مرا به خاطر بسپار -->
+                  <div class="mb-3 form-check d-flex align-items-center justify-content-start gap-2" style="padding-right: 5px;">
+                    <input type="checkbox" name="remember" class="form-check-input" id="rem" style="margin-top: 0; margin-left: 5px;">
+                    <label class="form-check-label text-muted" for="rem" style="font-size: 14px; user-select: none;">مرا به خاطر بسپار</label>
+                  </div>
+
+                  <!-- دکمه ورود -->
+                  <button type="submit" class="auth-btn primary-btn mb-3" style="background-color: #5d4b38; width: 100%; border: none;">
+                    ورود
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+
+                </form>
+
+                <!-- لینک ساخت حساب کاربری جدید -->
+                <div class="text-center mt-3">
+                  <p class="mb-0" style="font-size: 14px;">
+                    کاربر جدید هستید؟ <a href="{{ url_for('auth.register') }}" style="color: #5d4b38; font-weight: bold; text-decoration: none;">ساخت حساب</a>
+                  </p>
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" name="remember" class="form-check-input" id="rem">
-                    <label class="form-check-label" for="rem">مرا به خاطر بسپار</label>
-                </div>
-                <button type="submit" class="btn btn-success w-100">ورود</button>
-            </form>
-            <p class="mt-3 text-center">
-                کاربر جدید هستید؟ <a href="{{ url_for('auth.register') }}">ساخت حساب</a>
-            </p>
+
+              </div>
+
+            </div>
+          </div>
         </div>
-    </div>
-</div>
+
+      </div>
+
+    </section><!-- /Login Section -->
+
+  </main>
 {% endblock %}

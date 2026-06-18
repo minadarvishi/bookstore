@@ -65,6 +65,14 @@ def create_order(customer_info , user):
             user_id = user.id if user.is_authenticated else None
         )
 
+        if user.is_authenticated:
+            user.phone = customer_info.get('customer_phone')
+            user.address = customer_info.get('customer_address')
+            user.name = customer_info.get('customer_name')
+        
+            db.session.add(user)
+
+
         for item in cart_items:
             order_item = OrderItem(
                 product_id=item['product'].id,
