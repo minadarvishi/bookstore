@@ -55,6 +55,21 @@ def create_app():
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template('404.html'), 404
+    
+
+    # روت موقت برای ساخت ادمین روی هاست رندر
+    @app.route('/make-me-admin')
+    def make_me_admin():
+        from models import User, db
+        admin = User.query.filter_by(email="admin@bookstore.com").first()
+        if not admin:
+            admin = User(name="مدیر سیستم", email="admin@bookstore.com")
+            admin.set_password("admin12345")
+            admin.is_admin = True
+            db.session.add(admin)
+            db.session.commit()
+            return "حساب کاربری ادمین با موفقیت ساخته شد!"
+        return "حساب کاربری ادمین از قبل وجود دارد."
 
     return app
 
