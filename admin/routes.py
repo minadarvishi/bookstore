@@ -1,12 +1,21 @@
-from flask import Blueprint, render_template
-from flask import request, redirect, url_for, flash,session
-from models import Product, Category, Order, Publisher
+from flask import Blueprint, render_template, request, redirect, url_for, flash,session
+from models import Product, Category, Order, Publisher , User
 from . import services
 from .decorators import admin_required
+from flask_login import current_user ,logout_user
+from extensions import db
+
 
 admin_bp = Blueprint('admin', __name__,template_folder='templates',static_folder='static')
+@admin_bp.before_request
+def restrict_admin_blueprint():
+    # اجرای خودکار admin_required
+    if not current_user.is_authenticated or not current_user.is_admin:
+        flash("دسترسی غیرمجاز! برای ورود به پنل ادمین ابتدا باید با حساب ادمین وارد شوید.", "danger")
+        return redirect(url_for('auth.login'))
+
+
 @admin_bp.route('/dashboard')
-@admin_required
 def dashboard():
     stats = services.get_dashboard_stats()
     return render_template("home/index.html",stats=stats)
@@ -56,6 +65,32 @@ def delete_product(product_id):
     else:
         flash('خطا در حذف محصول.', 'danger')
     return redirect(url_for('admin.list_products'))
+
+
+#--- User route
+@admin_bp.route('/users')
+def users_list():
+    users = User.query.all()
+    return render_template('home/users.html',users = users)
+
+@admin_bp.route('/users/toggle-admin/<int:user_id>')
+def toggle_admin(user_id):
+    user, message = services.toggle_user_admin(user_id, current_user.id)
+    if user:
+        flash(message, "success")
+    else:
+        flash(message, "danger")
+    return redirect(url_for('admin.users_list'))
+
+@admin_bp.route('/users/delete/<int:user_id>')
+def delete_user(user_id):
+    success, message = services.delete_user(user_id, current_user.id)
+    if success:
+        flash(message, "info")
+    else:
+        flash(message, "danger")
+    return redirect(url_for('admin.users_list'))
+
 
 # --- Category route ---
 @admin_bp.route('/categories',methods=['GET','POST'])
@@ -161,22 +196,12 @@ def delete_publisher(publisher_id):
 
     return redirect(url_for('admin.list_publishers'))
 
-#--- Login admin
-@admin_bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if username == 'admin' and password == '12345':
-            session['is_admin'] = True
-            flash('شما با موفقیت وارد شدید.', 'success')
-            return redirect(url_for('admin.dashboard'))
-        else:
-            flash('نام کاربری یا رمز عبور اشتباه است.', 'danger')
 
-    return render_template('login.html')
+
+"""
 @admin_bp.route('/logout')
 def logout():
+    logout_user()
     session.pop('is_admin', None)
     flash('شما با موفقیت خارج شدید.', 'info')
-    return redirect(url_for('admin.login'))
+    return redirect(url_for('auth.login'))"""

@@ -295,6 +295,12 @@
           <i class="bi bi-bag-check ms-2 text-secondary"></i>
           <span>سفارشات من</span>
         </a>
+        {% if current_user.is_authenticated and current_user.is_admin %}
+          <a class="dropdown-item d-flex align-items-center text-dark" href="{{ url_for('admin.dashboard') }}">
+          <i class="bi bi-bag-check ms-2 text-secondary"></i>
+          <span> پنل ادمین</span>
+        </a>
+        {% endif %}
       </div>
       <div class="dropdown-footer px-3 py-2 border-top">
         <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline-danger w-100">خروج از حساب</a>
@@ -389,7 +395,6 @@
                         <li><a href="{{ url_for('main.about') }}">درباره ما</a></li>
                         <li><a href="{{ url_for('main.shop') }}">فروشگاه</a></li>
                         <li><a href="{{ url_for('main.contact') }}">تماس با ما</a></li>
-                        <li> <a href="{{ url_for('admin.login') }}">ورود به پنل مدیریت</a></li>
                     </ul>
                 </div>
 

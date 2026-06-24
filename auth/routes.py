@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template , redirect , url_for , flash , request ,abort
+from flask import session
 from flask_login import login_user , logout_user , login_required , current_user
 from auth.services import AuthService , AddressService
 from models import Order
@@ -27,6 +28,10 @@ def register():
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin.dashboard')) if current_user.is_admin else redirect(url_for('main.home'))
+
+
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -34,8 +39,13 @@ def login():
         user = AuthService.authenticate_user(email , password)
         if user : 
             login_user(user)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+
+            if user.is_admin:
+                flash('خوش آمدید ادمین گرامی!', 'success')
+                return redirect(url_for('admin.dashboard'))
+            else: 
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('main.home'))
         
         flash('ایمیل یا رمز عبور اشتباه است.', 'danger')
     
@@ -45,6 +55,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    session.pop('cart', None) 
     flash('شما با موفقیت خارج شدید.', 'info')
     return redirect(url_for('main.home'))
 

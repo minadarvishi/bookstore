@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename #  امن‌سازی نام فایل
 from flask import current_app
 from extensions import db
 from sqlalchemy import func
-from models import Product, Category, Order, Publisher, OrderItem
+from models import Product, Category, Order, Publisher, OrderItem , User
 from sqlalchemy.exc import IntegrityError
 
 
@@ -54,6 +54,7 @@ def add_new_product(form_data,img):
         print(f"Error adding product: {e}")
         db.session.rollback()
         return False
+    
 # اپدیت محصول
 def update_existing_product(product,form_data,img):
     product.category_id=int(form_data.get('category_id'))
@@ -70,8 +71,7 @@ def update_existing_product(product,form_data,img):
 
     if img and img.filename != '':
         product.image_file = save_product_img(img)
-    else:
-        product.image_file ='default.jpg'
+
     try:
         db.session.commit()
         return True
@@ -206,8 +206,6 @@ def update_publisher(publisher, form_data, logo_file):
                 old_logo_path = os.path.join(current_app.static_folder, 'uploads', old_logo_to_delete)
                 if os.path.exists(old_logo_path):
                     os.remove(old_logo_path)
-        else:
-            publisher.logo_file = 'default_publisher.jpg'
         db.session.commit()
         return True, "ناشر با موفقیت به‌روزرسانی شد."
     except IntegrityError:
@@ -236,6 +234,37 @@ def delete_publisher(publisher_id):
         db.session.rollback()
         return False, f"خطا در حذف ناشر: {e}"
 
+# --- User Services ---
+#تغییر نقش
+def toggle_user_admin(user_id, current_admin_id):
+    if user_id == current_admin_id:
+        return None, "شما نمی‌توانید دسترسی ادمین خودتان را لغو کنید!"
+            
+    user = User.query.get(user_id)
+    if not user:
+        return None, "کاربر پیدا نشد."
+            
+    
+    user.is_admin = not user.is_admin
+    db.session.commit()
+        
+    status = "مدیر سیستم" if user.is_admin else "مشتری عادی"
+    return user, f"نقش کاربر '{user.name}' با موفقیت به '{status}' تغییر یافت."
+
+def delete_user(user_id, current_admin_id):
+    if user_id == current_admin_id:
+        return False, "شما نمی‌توانید حساب کاربری خودتان را حذف کنید!"
+            
+    user = User.query.get(user_id)
+    if not user:
+        return False, "کاربر پیدا نشد."
+            
+    db.session.delete(user)
+    db.session.commit()
+    return True, f"کاربر '{user.name}' با موفقیت از سیستم حذف شد."
+
+
+
 # --- گزارش گیری ---
 def get_dashboard_stats():
     total_revenue = db.session.query(func.sum(Order.total_price)).scalar() or 0
@@ -249,6 +278,7 @@ def get_dashboard_stats():
      .group_by(Product.name)\
      .order_by(func.sum(OrderItem.quantity).desc())\
      .limit(5).all()
+    total_users = User.query.count()
 
     stats = {
         'total_revenue': total_revenue,
@@ -256,6 +286,7 @@ def get_dashboard_stats():
         'total_order_posted':total_order_posted,
         'total_products_sold': total_products_sold,
         'best_selling_products': best_selling_products,
+        'total_users':total_users
     }
 
     return stats

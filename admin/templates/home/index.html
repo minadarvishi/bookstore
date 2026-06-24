@@ -6,13 +6,14 @@
 
 {% block content %}
 
-    <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+  <div class="container-fluid py-4">
+
+<div class="row">
+      <div class="col-xl col-sm-6 mb-xl-0 mb-5">
           <div class="card">
             <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">attach_money</i>
+              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">paid</i>
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">مجموع درآمد</p>
@@ -24,13 +25,31 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+
+      <div class="col-xl col-sm-6 mb-xl-0 mb-5">
           <div class="card">
             <div class="card-header p-3 pt-2">
               <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
+                <i class="material-icons opacity-10">people</i>
               </div>
               <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">کاربران ثبت‌نام شده</p>
+                <h4 class="mb-0">{{ stats.total_users }}</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl col-sm-6 mb-xl-0 mb-5">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div class="icon icon-lg icon-shape bg-gradient-warning shadow-warning text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">pending_actions</i>
+              </div>
+              <div class="text-end pt-1" >
                 <p class="text-sm mb-0 text-capitalize">سفارشات در انتظار</p>
                 <h4 class="mb-0">{{ stats.total_order_pending }}</h4>
               </div>
@@ -40,11 +59,12 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+
+        <div class="col-xl col-sm-6 mb-xl-0 mb-5">
           <div class="card">
             <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
+              <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">local_shipping</i>
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">سفارشات ارسال شده</p>
@@ -56,11 +76,12 @@
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6">
+
+        <div class="col-xl col-sm-6">
           <div class="card">
             <div class="card-header p-3 pt-2">
-              <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">inventory</i>
+              <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">inventory_2</i>
               </div>
               <div class="text-end pt-1">
                 <p class="text-sm mb-0 text-capitalize">تعداد محصولات فروخته شده</p>
@@ -72,8 +93,9 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row mt-4">
+    </div>
+
+    <div class="row mt-4">
     <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card">
             <div class="card-header pb-0 p-3">
@@ -105,8 +127,9 @@
             </div>
         </div>
     </div>
-</div>
     </div>
+
+  </div>
 
 {% endblock content %}
 

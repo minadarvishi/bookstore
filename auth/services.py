@@ -1,7 +1,7 @@
 from models import User, db , Order , Address
 
 class AuthService :
-
+    # ثبت نام کاربر
     @staticmethod
     def register_user (name, email, password):
 
@@ -20,7 +20,7 @@ class AuthService :
             print(f"Error : {e}")
             db.session.rollback()
             return None, "خطایی در ثبت اطلاعات رخ داد."
-
+    #ورود کاربر
     @staticmethod  
     def authenticate_user(email , password):
 
@@ -33,8 +33,7 @@ class AuthService :
     @staticmethod
     def get_user_orders(user_id):
         return Order.query.filter_by(user_id = user_id).order_by(Order.order_date.desc()).all()
-
-    
+   
     @staticmethod
     def update_profile(user, name, phone, address):
         user.name = name
@@ -90,7 +89,7 @@ class AddressService:
                     db.session.commit()
             return True
         return False
-
+    # انتخاب ادرس پیش فرض
     @staticmethod
     def set_default(user_id, address_id):
         AddressService.clear_defaults(user_id)

@@ -80,6 +80,8 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(256), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     address = db.Column(db.Text, nullable=True)
+
+    is_admin = db.Column(db.Boolean , default = False , nullable = False)
     
     addresses = db.relationship('Address', backref='user', lazy=True, cascade="all, delete-orphan")
 

@@ -26,6 +26,15 @@
             <span class="nav-link-text ms-1">محصولات</span>
           </a>
         </li>
+                <li class="nav-item">
+          <a class="nav-link text-white {% if 'tables' in segment %} active bg-gradient-primary {% endif %}" 
+             href="{{ url_for('admin.users_list') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">کاربران</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link text-white {% if 'billing' in segment %} active bg-gradient-primary {% endif %}" 
              href="{{ url_for('admin.add_product') }}">
@@ -76,7 +85,7 @@
       <div class="mx-3">
         <a class="btn bg-gradient-primary mt-4 w-100" 
            target="_blank" 
-           href="{{ url_for('admin.logout') }}" type="button">خروج از پنل</a>
+           href="{{ url_for('auth.logout') }}" type="button">خروج از پنل</a>
       </div>
     </div>
   </aside>

@@ -1,12 +1,14 @@
 
 from functools import wraps
-from flask import session, redirect, url_for, flash
+from flask import redirect, url_for, flash
+from flask_login import current_user
 
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'is_admin' not in session:
-            flash("برای دسترسی به این صفحه باید وارد شوید.", "warning")
-            return redirect(url_for('admin.login'))
+        if not current_user.is_authenticated or not current_user.is_admin:
+            flash("دسترسی غیرمجاز! برای ورود به پنل ادمین ابتدا باید با حساب ادمین وارد شوید.", "danger")
+            return redirect(url_for('auth.login')) 
+            
         return f(*args, **kwargs)
     return decorated_function
