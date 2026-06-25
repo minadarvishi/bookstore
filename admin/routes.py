@@ -7,9 +7,13 @@ from extensions import db
 
 
 admin_bp = Blueprint('admin', __name__,template_folder='templates',static_folder='static')
+
+
+# اجرای خودکار admin_required
 @admin_bp.before_request
 def restrict_admin_blueprint():
-    # اجرای خودکار admin_required
+    if request.endpoint == 'admin.static':
+        return
     if not current_user.is_authenticated or not current_user.is_admin:
         flash("دسترسی غیرمجاز! برای ورود به پنل ادمین ابتدا باید با حساب ادمین وارد شوید.", "danger")
         return redirect(url_for('auth.login'))

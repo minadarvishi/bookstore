@@ -61,6 +61,8 @@ def create_app():
     @app.route('/make-me-admin')
     def make_me_admin():
         from models import User, db
+        from flask import flash, redirect, url_for 
+        
         admin = User.query.filter_by(email="admin@bookstore.com").first()
         if not admin:
             admin = User(name="مدیر سیستم", email="admin@bookstore.com")
@@ -68,8 +70,13 @@ def create_app():
             admin.is_admin = True
             db.session.add(admin)
             db.session.commit()
-            return "حساب کاربری ادمین با موفقیت ساخته شد!"
-        return "حساب کاربری ادمین از قبل وجود دارد."
+            
+            flash("حساب کاربری ادمین پیش‌فرض با موفقیت ساخته شد! اکنون می‌توانید وارد شوید.", "success")
+        else:
+            flash("حساب کاربری ادمین از قبل وجود دارد.", "info")
+            
+        
+        return redirect(url_for('auth.login'))
 
     return app
 
